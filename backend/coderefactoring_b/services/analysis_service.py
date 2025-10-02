@@ -47,7 +47,6 @@ def run_command(command: str, cwd: str = None, capture_output: bool = True) -> D
             text=True,
             timeout=60  # Increased timeout
         )
-        
         return {
             "success": result.returncode == 0,
             "stdout": result.stdout if capture_output else "",
