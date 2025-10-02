@@ -1,0 +1,31 @@
+name: Deploy Backend to EC2
+
+on:
+    push:
+        branches: [main]
+        paths:
+            - "backend/**"
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Deploy to EC2
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                  host: ${{ secrets.AWS_HOST }}
+                  username: ${{ secrets.AWS_USERNAME }}
+                  key: ${{ secrets.AWS_SSH_KEY }}
+                  script: |
+                      # CORRECT: Navigate to the root backend folder where the master docker-compose.yml is
+                      cd ~/personalprojects/backend
+
+                      # Pull the latest code from your GitHub repository
+                      git pull origin main
+
+                      # Use docker-compose to rebuild and restart all services in the background
+                      docker-compose up --build -d
+
+                      # Clean up any old, unused Docker images
+                      docker image prune -f

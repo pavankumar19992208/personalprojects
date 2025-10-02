@@ -1,0 +1,42 @@
+name: Deploy Upgrade Agent Frontend
+
+on:
+  push:
+    branches: [main]
+    # IMPORTANT: This workflow now ONLY runs for changes in this specific folder
+    paths:
+      - "frontend/upgrade-agent/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        # The working-directory is crucial for targeting the right project
+        working-directory: ./frontend/upgrade-agent
+        run: npm install
+
+      - name: Build project
+        working-directory: ./frontend/upgrade-agent
+        run: npm run build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          # Use a generic region secret or hardcode it if all apps are in the same region
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync ./frontend/upgrade-agent/dist s3://${{ secrets.UPGRADE_AGENT_AWS_S3_BUCKET }} --delete

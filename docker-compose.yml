@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  coderefactoring_api:
+    build: ./coderefactoring_b
+    restart: always
+    expose:
+      - "8000"
+
+  # Add your other services here as you create them
+  # new_auth_api:
+  #   build: ./new_auth_service
+  #   restart: always
+  #   expose:
+  #     - "8000"
+
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - coderefactoring_api
+      # - new_auth_api

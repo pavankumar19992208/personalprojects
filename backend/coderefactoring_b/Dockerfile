@@ -1,29 +1,21 @@
+# Use an official Python runtime as a parent image
 FROM python:3.11-slim
 
+# Set the working directory in the container
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements and install Python dependencies
+# Copy the requirements file into the container at /app
 COPY requirements.txt .
+
+# Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# Copy the rest of the application's code into the container at /app
 COPY . .
 
-# Create non-root user
-RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
-USER appuser
-
-# Expose port
+# Expose port 8000 to the outside world
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:8000/health || exit 1
-
-# Start the application
+# Command to run the application using uvicorn
+# Replace 'main:app' with 'your_main_file_name:your_fastapi_instance_name' if different
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
