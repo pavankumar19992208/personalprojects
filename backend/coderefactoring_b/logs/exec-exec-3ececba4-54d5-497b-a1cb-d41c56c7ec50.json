@@ -1,0 +1,352 @@
+[
+  {
+    "step": "Received payload",
+    "executionId": "exec-3ececba4-54d5-497b-a1cb-d41c56c7ec50",
+    "timestamp": "2025-07-17T05:25:11.022119Z",
+    "dependenciesCount": 43
+  },
+  {
+    "step": "Checked npm version",
+    "name": "@dotlottie/react-player",
+    "current": "^1.6.19",
+    "latest": "1.6.19",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:11.707302Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "@emotion/react",
+    "current": "^11.14.0",
+    "latest": "11.14.0",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:12.218167Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "@emotion/styled",
+    "current": "^11.14.0",
+    "latest": "11.14.1",
+    "priority": "Could have",
+    "timestamp": "2025-07-17T05:25:12.671233Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "@fontsource/noto-sans-telugu",
+    "current": "^5.2.5",
+    "latest": "5.2.6",
+    "priority": "Could have",
+    "timestamp": "2025-07-17T05:25:13.190668Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "@hookform/resolvers",
+    "current": "^4.1.1",
+    "latest": "5.1.1",
+    "priority": "Must have",
+    "timestamp": "2025-07-17T05:25:13.677228Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "@lottiefiles/dotlottie-react",
+    "current": "^0.13.0",
+    "latest": "0.14.3",
+    "priority": "Should have",
+    "timestamp": "2025-07-17T05:25:14.267817Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "@mui/icons-material",
+    "current": "^6.4.7",
+    "latest": "7.2.0",
+    "priority": "Must have",
+    "timestamp": "2025-07-17T05:25:14.780273Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "@mui/lab",
+    "current": "^6.0.0-beta.30",
+    "latest": "7.0.0-beta.14",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:15.388930Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "@mui/material",
+    "current": "^6.4.6",
+    "latest": "7.2.0",
+    "priority": "Must have",
+    "timestamp": "2025-07-17T05:25:15.858094Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "@mui/styles",
+    "current": "^6.4.6",
+    "latest": "6.4.8",
+    "priority": "Could have",
+    "timestamp": "2025-07-17T05:25:16.343204Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "@mui/x-charts",
+    "current": "^8.0.0",
+    "latest": "8.8.0",
+    "priority": "Should have",
+    "timestamp": "2025-07-17T05:25:16.929625Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "@mui/x-data-grid",
+    "current": "^7.27.2",
+    "latest": "8.8.0",
+    "priority": "Must have",
+    "timestamp": "2025-07-17T05:25:17.540921Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "@mui/x-date-pickers",
+    "current": "^7.27.1",
+    "latest": "8.8.0",
+    "priority": "Must have",
+    "timestamp": "2025-07-17T05:25:17.997585Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "apexcharts",
+    "current": "^4.7.0",
+    "latest": "5.2.0",
+    "priority": "Must have",
+    "timestamp": "2025-07-17T05:25:18.572501Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "axios",
+    "current": "^1.7.9",
+    "latest": "1.10.0",
+    "priority": "Should have",
+    "timestamp": "2025-07-17T05:25:19.336641Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "chart.js",
+    "current": "^4.4.9",
+    "latest": "4.5.0",
+    "priority": "Should have",
+    "timestamp": "2025-07-17T05:25:19.996544Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "date-fns",
+    "current": "^2.28.0",
+    "latest": "4.1.0",
+    "priority": "Must have",
+    "timestamp": "2025-07-17T05:25:20.515847Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "dayjs",
+    "current": "^1.11.13",
+    "latest": "1.11.13",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:21.000260Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "dotenv",
+    "current": "^16.4.7",
+    "latest": "17.2.0",
+    "priority": "Must have",
+    "timestamp": "2025-07-17T05:25:21.462517Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "env-cmd",
+    "current": "^10.1.0",
+    "latest": "10.1.0",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:21.892160Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "firebase",
+    "current": "^11.4.0",
+    "latest": "11.10.0",
+    "priority": "Should have",
+    "timestamp": "2025-07-17T05:25:22.781921Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "history",
+    "current": "^5.3.0",
+    "latest": "5.3.0",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:23.210891Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "html2canvas",
+    "current": "^1.4.1",
+    "latest": "1.4.1",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:23.822875Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "jspdf",
+    "current": "^3.0.1",
+    "latest": "3.0.1",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:24.325524Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "jspdf-autotable",
+    "current": "^5.0.2",
+    "latest": "5.0.2",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:24.813269Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "lottie-react",
+    "current": "^2.4.1",
+    "latest": "2.4.1",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:25.424117Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "react",
+    "current": "^19.0.0",
+    "latest": "19.1.0",
+    "priority": "Should have",
+    "timestamp": "2025-07-17T05:25:25.921319Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "react-apexcharts",
+    "current": "^1.7.0",
+    "latest": "1.7.0",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:26.474759Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "react-beautiful-dnd",
+    "current": "^13.1.1",
+    "latest": "13.1.1",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:27.071772Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "react-chartjs-2",
+    "current": "^5.3.0",
+    "latest": "5.3.0",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:27.675375Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "react-dom",
+    "current": "^19.0.0",
+    "latest": "19.1.0",
+    "priority": "Should have",
+    "timestamp": "2025-07-17T05:25:28.312963Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "react-fast-marquee",
+    "current": "^1.6.5",
+    "latest": "1.6.5",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:28.802704Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "react-joyride",
+    "current": "^2.9.3",
+    "latest": "2.9.3",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:29.338643Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "react-otp-input",
+    "current": "^3.1.1",
+    "latest": "3.1.1",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:29.794422Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "react-router-dom",
+    "current": "^6.29.0",
+    "latest": "7.7.0",
+    "priority": "Must have",
+    "timestamp": "2025-07-17T05:25:30.272476Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "react-scripts",
+    "current": "^5.0.1",
+    "latest": "5.0.1",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:30.762079Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "react-toastify",
+    "current": "^11.0.5",
+    "latest": "11.0.5",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:31.209491Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "react-webcam",
+    "current": "^7.2.0",
+    "latest": "7.2.0",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:31.730857Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "socket.io-client",
+    "current": "^4.8.1",
+    "latest": "4.8.1",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:32.282287Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "sweetalert2",
+    "current": "^11.19.1",
+    "latest": "11.22.2",
+    "priority": "Should have",
+    "timestamp": "2025-07-17T05:25:32.905588Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "uuid",
+    "current": "^11.1.0",
+    "latest": "11.1.0",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:33.398982Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "xlsx",
+    "current": "^0.18.5",
+    "latest": "0.18.5",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:33.927301Z"
+  },
+  {
+    "step": "Checked npm version",
+    "name": "yup",
+    "current": "^1.6.1",
+    "latest": "1.6.1",
+    "priority": "Won't have",
+    "timestamp": "2025-07-17T05:25:34.524330Z"
+  }
+]
