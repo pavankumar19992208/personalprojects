@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         # The working-directory is crucial for targeting the right project
         working-directory: ./frontend/upgrade-agent
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Build project
         working-directory: ./frontend/upgrade-agent
