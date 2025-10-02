@@ -1,0 +1,18 @@
+.flying-angel {
+  position: fixed;
+  left: 10vw;
+  top: 40vh;
+  z-index: 20;
+  animation: fly-angel 7s linear infinite;
+}
+
+@keyframes fly-angel {
+  0% {
+    left: 10vw;
+    top: 40vh;
+  }
+  100% {
+    left: 80vw;
+    top: 10vh;
+  }
+}

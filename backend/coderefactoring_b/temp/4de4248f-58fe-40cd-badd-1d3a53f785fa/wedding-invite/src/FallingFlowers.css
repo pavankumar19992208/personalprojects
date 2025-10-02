@@ -1,0 +1,76 @@
+.falling-flowers {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+}
+
+.flower {
+  position: absolute;
+  width: 36px;
+  opacity: 0.85;
+  animation: fall 6s linear infinite;
+}
+
+.flower-0 {
+  left: 5vw;
+  animation-delay: 0s;
+}
+.flower-1 {
+  left: 15vw;
+  animation-delay: 1s;
+}
+.flower-2 {
+  left: 25vw;
+  animation-delay: 2s;
+}
+.flower-3 {
+  left: 35vw;
+  animation-delay: 1.5s;
+}
+.flower-4 {
+  left: 45vw;
+  animation-delay: 0.5s;
+}
+.flower-5 {
+  left: 55vw;
+  animation-delay: 2.5s;
+}
+.flower-6 {
+  left: 65vw;
+  animation-delay: 1.2s;
+}
+.flower-7 {
+  left: 75vw;
+  animation-delay: 0.8s;
+}
+.flower-8 {
+  left: 85vw;
+  animation-delay: 2.2s;
+}
+.flower-9 {
+  left: 95vw;
+  animation-delay: 1.7s;
+}
+.flower-10 {
+  left: 50vw;
+  animation-delay: 0.3s;
+}
+.flower-11 {
+  left: 70vw;
+  animation-delay: 1.1s;
+}
+
+@keyframes fall {
+  0% {
+    top: -40px;
+    transform: rotate(0deg);
+  }
+  100% {
+    top: 100vh;
+    transform: rotate(360deg);
+  }
+}

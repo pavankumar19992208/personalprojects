@@ -1,0 +1,105 @@
+.log-viewer {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 14px;
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column;
+  overflow: hidden; /* Crucial for containing scrolling */
+  height: 100%; /* Make it fill the parent panel */
+}
+
+.log-viewer-content {
+  overflow-y: auto; /* This will scroll the MAJOR steps */
+  flex-grow: 1;
+  padding: 10px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.log-viewer-content::-webkit-scrollbar {
+  display: none;
+}
+.log-group {
+  border: 1px solid #333;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background-color: #252526;
+  /* This part is for nested scrolling */
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh; /* Prevent one group from taking over the whole screen */
+}
+
+.log-group-header {
+  background-color: #333;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  text-align: left;
+  flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.log-group-header:hover {
+  background-color: #3c3c3c;
+}
+
+.log-group-header > svg:first-child {
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.log-group-title {
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+.log-group-content {
+  padding: 10px 15px 10px 45px;
+  border-top: 1px solid #333;
+  overflow-y: auto; /* This will scroll the MINOR steps */
+  flex-grow: 1;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.log-group-content::-webkit-scrollbar {
+  display: none;
+}
+
+.log-line {
+  display: flex;
+  align-items: center;
+  padding: 2px 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.log-message {
+  margin-left: 12px;
+}
+
+.log-icon-space {
+  display: inline-block;
+  width: 1em;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.icon-success { color: #23d18b; }
+.icon-error { color: #f44747; }
+.icon-warning { color: #f8e71c; }
+.icon-info { color: #808080; }
+
+.icon-loading {
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
