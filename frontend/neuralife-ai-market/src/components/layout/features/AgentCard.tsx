@@ -20,7 +20,7 @@ const AgentCard = ({ agent }: AgentCardProps) => {
           {agent.type === "web" ? (
             <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center space-x-1">
               <Globe className="h-4 w-4 text-primary-600" />
-              <span className="text-xs font-medium">Web</span>
+              <span className="text-xs font-medium">web</span>
             </div>
           ) : (
             <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center space-x-1">

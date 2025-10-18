@@ -1,0 +1,50 @@
+name: Deploy Neuralife AI Market to GitHub Pages
+
+on:
+    push:
+        branches: [main]
+        # This workflow runs only for changes in the neuralife-ai-market folder
+        paths:
+            - "frontend/neuralife-ai-market/**"
+
+# Allow this job to clone the repo and create a page deployment
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+                  # Cache yarn dependencies to speed up future builds
+                  cache: "yarn"
+                  cache-dependency-path: frontend/neuralife-ai-market/yarn.lock
+
+            - name: Install dependencies
+              working-directory: ./frontend/neuralife-ai-market
+              run: yarn install --frozen-lockfile
+
+            - name: Build project
+              working-directory: ./frontend/neuralife-ai-market
+              run: yarn build
+
+            - name: Setup Pages
+              uses: actions/configure-pages@v5
+
+            - name: Upload artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  # Upload the build output from your project's dist folder
+                  path: ./frontend/neuralife-ai-market/dist
+
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
