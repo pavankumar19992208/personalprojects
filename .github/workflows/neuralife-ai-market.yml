@@ -1,11 +1,13 @@
-name: Deploy Neuralife AI Market to GitHub Pages
+name: Deploy All Frontend Apps to GitHub Pages
 
 on:
     push:
         branches:
             - main
+        # Trigger the workflow if anything changes in the frontend folder or the root index.html
         paths:
-            - "frontend/neuralife-ai-market/**"
+            - "frontend/**"
+            - "index.html"
 
 permissions:
     contents: read
@@ -24,15 +26,39 @@ jobs:
               with:
                   node-version: "20"
                   cache: "yarn"
-                  cache-dependency-path: frontend/neuralife-ai-market/yarn.lock
+                  cache-dependency-path: "**/yarn.lock" # Cache for all projects
 
-            - name: Install dependencies
-              working-directory: ./frontend/neuralife-ai-market
-              run: yarn install --frozen-lockfile
+            # --- Build Neuralife AI Market ---
+            - name: Build Neuralife AI Market
+              run: |
+                  cd frontend/neuralife-ai-market
+                  yarn install --frozen-lockfile
+                  yarn build
+                  cd ../.. # Go back to the root
 
-            - name: Build project
-              working-directory: ./frontend/neuralife-ai-market
-              run: yarn build
+            # --- Build Other Apps (Example for later) ---
+            # - name: Build Upgrade Agent
+            #   run: |
+            #     cd frontend/upgrade-agent
+            #     npm install --legacy-peer-deps
+            #     npm run build
+            #     cd ../..
+
+            # --- Assemble Site for Deployment ---
+            - name: Assemble site
+              run: |
+                  # Create the root directory for deployment
+                  mkdir -p _site/personalprojects/neuralife-ai-market
+
+                  # Copy the root landing page
+                  cp index.html _site/
+
+                  # Copy the built app to its sub-path
+                  cp -r frontend/neuralife-ai-market/dist/* _site/personalprojects/neuralife-ai-market/
+
+                  # When you add another app, you would copy it here too
+                  # mkdir -p _site/personalprojects/upgrade-agent
+                  # cp -r frontend/upgrade-agent/dist/* _site/personalprojects/upgrade-agent/
 
             - name: Setup Pages
               uses: actions/configure-pages@v5
@@ -40,7 +66,8 @@ jobs:
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
               with:
-                  path: ./frontend/neuralife-ai-market/dist
+                  # Upload the assembled site from the _site directory
+                  path: ./_site
 
             - name: Deploy to GitHub Pages
               id: deployment

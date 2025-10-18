@@ -9,7 +9,7 @@ import SubmitAgent from "./pages/SubmitAgent";
 
 function App() {
   return (
-    <Router basename="/personalprojects">
+    <Router basename="/personalprojects/neuralife-ai-market">
       <div className="flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow">
