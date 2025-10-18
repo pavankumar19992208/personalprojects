@@ -1,0 +1,149 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 950" width="1600" height="950" preserveAspectRatio="xMidYMid meet">
+
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="grad1" x1="0" x2="1">
+      <stop offset="0%" stop-color="#6EE7B7"></stop>
+      <stop offset="100%" stop-color="#60A5FA"></stop>
+    </linearGradient>
+    <linearGradient id="grad2" x1="0" x2="1">
+      <stop offset="0%" stop-color="#FDE68A"></stop>
+      <stop offset="100%" stop-color="#FB7185"></stop>
+    </linearGradient>
+
+    <!-- Drop Shadow -->
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.18"></feDropShadow>
+    </filter>
+
+    <!-- Arrow Marker -->
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#334155"></path>
+    </marker>
+
+    <!-- Styles -->
+    <style>
+      .title     { font:700 22px 'Segoe UI',sans-serif; fill:#0f172a }
+      .subtitle  { font:600 14px 'Segoe UI',sans-serif; fill:#475569 }
+      .node      { font:600 13px 'Segoe UI',sans-serif; fill:#0f172a }
+      .step      { font:500 12px 'Segoe UI',sans-serif; fill:#334155 }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#f8fafc"></rect>
+
+  <!-- Header -->
+  <g transform="translate(40,30)">
+    <rect width="1520" height="70" rx="10" fill="url(#grad1)" filter="url(#shadow)"></rect>
+    <text x="30" y="40" class="title">Project Upgrade — Architectural Flow</text>
+    <text x="30" y="62" class="subtitle">Phase 1: Analysis &amp; Planning — Phase 2: Refactor &amp; Completion</text>
+  </g>
+
+  <!-- Phase Labels -->
+  <text x="260" y="120" class="subtitle" fill="#0f172a">Phase 1</text>
+  <text x="1120" y="120" class="subtitle" fill="#0f172a">Phase 2</text>
+
+  <!-- =====================  PHASE 1 ===================== -->
+  <g transform="translate(120,160)">
+    <rect width="320" height="70" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"></rect>
+    <text x="20" y="28" class="node">User Interface</text>
+    <text x="20" y="50" class="step">1. User uploads .zip file</text>
+  </g>
+
+  <g transform="translate(520,160)">
+    <rect width="320" height="90" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"></rect>
+    <text x="20" y="28" class="node">Backend API Gateway</text>
+    <text x="20" y="50" class="step">2. Establishes WebSocket &amp; saves file</text>
+    <text x="20" y="70" class="step">3. Instantiate &amp; Invoke Orchestrator</text>
+  </g>
+  <line x1="440" y1="195" x2="520" y2="195" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"></line>
+
+  <g transform="translate(520,300)">
+    <rect width="320" height="70" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"></rect>
+    <text x="20" y="30" class="node">File System</text>
+    <text x="20" y="52" class="step">Stores uploaded files &amp; outputs</text>
+  </g>
+  <line x1="680" y1="250" x2="680" y2="300" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"></line>
+
+  <g transform="translate(520,420)">
+    <rect width="320" height="70" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"></rect>
+    <text x="20" y="30" class="node">Orchestrator Agent</text>
+    <text x="20" y="52" class="step">4. Task: Analyze Project Dependencies</text>
+  </g>
+  <line x1="680" y1="370" x2="680" y2="420" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"></line>
+
+  <g transform="translate(120,540)">
+    <rect width="320" height="90" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"></rect>
+    <text x="20" y="28" class="node">Analysis Agent</text>
+    <text x="20" y="52" class="step">5. Reads project files</text>
+    <text x="20" y="72" class="step">6. Returns deprecated dependencies</text>
+  </g>
+  <line x1="520" y1="455" x2="440" y2="585" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"></line>
+  <line x1="440" y1="585" x2="520" y2="455" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"></line>
+
+  <g transform="translate(920,300)">
+    <rect width="360" height="90" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"></rect>
+    <text x="20" y="28" class="node">Research Agent (RAG)</text>
+    <text x="20" y="52" class="step">7. Research breaking changes</text>
+    <text x="20" y="72" class="step">8a. Query Vector DB for context</text>
+  </g>
+
+  <g transform="translate(920,420)">
+    <rect width="360" height="70" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"></rect>
+    <text x="20" y="30" class="node">Vector Database</text>
+    <text x="20" y="52" class="step">8b. Returns relevant documents</text>
+  </g>
+  <line x1="840" y1="455" x2="920" y2="345" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"></line>
+  <line x1="920" y1="455" x2="840" y2="455" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"></line>
+
+  <g transform="translate(520,600)">
+    <rect width="320" height="70" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"></rect>
+    <text x="20" y="30" class="node">Orchestrator — Compile Results</text>
+    <text x="20" y="52" class="step">9. Compile dependencies &amp; breaking changes</text>
+  </g>
+
+  <g transform="translate(520,720)">
+    <rect width="320" height="70" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"></rect>
+    <text x="20" y="30" class="node">Backend API Gateway</text>
+    <text x="20" y="52" class="step">10. Sends ‘phase_one_complete’ via WebSocket</text>
+  </g>
+  <line x1="680" y1="670" x2="680" y2="720" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"></line>
+
+  <!-- =====================  PHASE 2 ===================== -->
+  <g transform="translate(1120,540)">
+    <rect width="320" height="70" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"></rect>
+    <text x="20" y="28" class="node">User Interface</text>
+    <text x="20" y="52" class="step">11. User selects packages &amp; ‘Start Upgrade’</text>
+  </g>
+
+  <g transform="translate(1120,660)">
+    <rect width="320" height="90" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"></rect>
+    <text x="20" y="28" class="node">Orchestrator Agent</text>
+    <text x="20" y="52" class="step">12. Invoke with selected packages</text>
+    <text x="20" y="72" class="step">13. Generates step-by-step refactoring plan</text>
+  </g>
+  <line x1="1280" y1="610" x2="1280" y2="660" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"></line>
+
+  <g transform="translate(820,780)">
+    <rect width="320" height="80" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"></rect>
+    <text x="20" y="28" class="node">Refactoring Agent</text>
+    <text x="20" y="52" class="step">14-16. Refactor files in-memory &amp; return modified</text>
+  </g>
+
+  <g transform="translate(1120,780)">
+    <rect width="320" height="80" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"></rect>
+    <text x="20" y="28" class="node">File System</text>
+    <text x="20" y="52" class="step">17-18. Write updates &amp; zip project</text>
+  </g>
+  <line x1="1120" y1="705" x2="940" y2="780" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"></line>
+  <line x1="940" y1="820" x2="1120" y2="820" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"></line>
+
+  <g transform="translate(1420,780)">
+    <rect width="320" height="80" rx="12" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"></rect>
+    <text x="20" y="28" class="node">Backend API Gateway</text>
+    <text x="20" y="52" class="step">19-20. Notify completion &amp; send download path</text>
+  </g>
+  <line x1="1440" y1="820" x2="1420" y2="820" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"></line>
+</svg>
