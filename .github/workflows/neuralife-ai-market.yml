@@ -45,20 +45,21 @@ jobs:
             #     cd ../..
 
             # --- Assemble Site for Deployment ---
+            # --- Assemble Site for Deployment ---
             - name: Assemble site
               run: |
                   # Create the root directory for deployment
-                  mkdir -p _site/personalprojects/neuralife-ai-market
+                  mkdir -p _site/neuralife-ai-market
 
                   # Copy the root landing page
                   cp index.html _site/
 
                   # Copy the built app to its sub-path
-                  cp -r frontend/neuralife-ai-market/dist/* _site/personalprojects/neuralife-ai-market/
+                  cp -r frontend/neuralife-ai-market/dist/* _site/neuralife-ai-market/
 
                   # When you add another app, you would copy it here too
-                  # mkdir -p _site/personalprojects/upgrade-agent
-                  # cp -r frontend/upgrade-agent/dist/* _site/personalprojects/upgrade-agent/
+                  # mkdir -p _site/upgrade-agent
+                  # cp -r frontend/upgrade-agent/dist/* _site/upgrade-agent/
 
             - name: Setup Pages
               uses: actions/configure-pages@v5
