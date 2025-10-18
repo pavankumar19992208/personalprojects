@@ -31,7 +31,7 @@ const mockAgents: Agent[] = [
     tags: ["Education", "AI Tutor", "Study Help"],
     status: "active",
   },
-  // Add more mock agents as needed
+  // Add more mock agents as neede
 ];
 
 const categories: AgentCategory[] = [
