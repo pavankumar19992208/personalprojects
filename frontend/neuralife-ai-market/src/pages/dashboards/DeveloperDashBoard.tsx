@@ -7,8 +7,14 @@ import {
   Users,
   FolderKanban,
   Download, // Import the Download icon
+  Power,
+  AlertTriangle, // Add AlertTriangle
+  //   X,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { useState } from "react"; // Import useState
+import developerProfileImage from "../../assets/profilepic.png"; // Import the local image
 
 // Mock data for the developer's agents
 const mockAgents = [
@@ -24,7 +30,8 @@ const mockAgents = [
     views: 12500,
     downloads: null,
     revenue: 450.75,
-    imageUrl: "https://i.pravatar.cc/150?img=1",
+    imageUrl:
+      "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=512&auto=format&fit=crop",
   },
   {
     name: "Study Buddy",
@@ -38,7 +45,8 @@ const mockAgents = [
     views: 50000, // e.g., App Store page views
     downloads: 18000,
     revenue: 890.0,
-    imageUrl: "https://i.pravatar.cc/150?img=3",
+    imageUrl:
+      "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=512&auto=format&fit=crop",
   },
   {
     name: "Portfolio Architect",
@@ -52,11 +60,14 @@ const mockAgents = [
     views: 8200,
     downloads: null,
     revenue: 210.5,
-    imageUrl: "https://i.pravatar.cc/150?img=2",
+    imageUrl:
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=512&auto=format&fit=crop",
   },
 ];
 
 const DeveloperDashboard = () => {
+  const { user, logout } = useAuth();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const totalViews = mockAgents.reduce((sum, agent) => sum + agent.views, 0);
   const totalRevenue = mockAgents.reduce(
     (sum, agent) => sum + agent.revenue,
@@ -69,21 +80,37 @@ const DeveloperDashboard = () => {
         {/* Header Section */}
         <header className="mb-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Developer Dashboard
-              </h1>
-              <p className="text-gray-600 mt-1">
-                Welcome back, Alex! Here's an overview of your agents.
-              </p>
+            <div className="flex items-center gap-4">
+              <img
+                src={developerProfileImage}
+                alt="Developer profile"
+                className="h-16 w-16 rounded-full object-cover ring-2 ring-white ring-offset-2 ring-offset-gray-100"
+              />
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">
+                  Developer Dashboard
+                </h1>
+                <p className="text-gray-600 mt-1">
+                  Welcome back, {user?.name}! Here's an overview of your agents.
+                </p>
+              </div>
             </div>
-            <Link
-              to="/submit"
-              className="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary-700 transition-colors inline-flex items-center gap-2"
-            >
-              <PlusCircle className="h-4 w-4" />
-              Submit New Agent
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                to="/submit"
+                className="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primary-700 transition-colors inline-flex items-center gap-2"
+              >
+                <PlusCircle className="h-4 w-4" />
+                Submit New Agent
+              </Link>
+              <button
+                onClick={() => setIsLogoutModalOpen(true)}
+                className="p-2 rounded-full transition-colors duration-300 hover:bg-red-100/50"
+                title="Logout"
+              >
+                <Power className="h-5 w-5 text-red-600 stroke-[2.5] transition-all duration-300 filter drop-shadow-[0_0_2px_rgba(239,68,68,0.6)] group-hover:drop-shadow-[0_0_5px_rgba(239,68,68,1)]" />
+              </button>
+            </div>
           </div>
 
           {/* Stats Overview */}
@@ -119,6 +146,11 @@ const DeveloperDashboard = () => {
             ))}
           </div>
         </main>
+        <LogoutConfirmationModal
+          isOpen={isLogoutModalOpen}
+          onClose={() => setIsLogoutModalOpen(false)}
+          onConfirm={logout}
+        />
       </div>
     </div>
   );
@@ -247,5 +279,59 @@ const AgentCard = ({ agent }: { agent: (typeof mockAgents)[0] }) => (
     </div>
   </div>
 );
+
+const LogoutConfirmationModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 text-center relative animate-in fade-in-0 zoom-in-95"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+          <AlertTriangle className="h-6 w-6 text-red-600" aria-hidden="true" />
+        </div>
+        <div className="mt-3">
+          <h3 className="text-lg font-semibold leading-6 text-gray-900">
+            Logout Confirmation
+          </h3>
+          <div className="mt-2">
+            <p className="text-sm text-gray-500">
+              Are you sure you want to sign out of your account?
+            </p>
+          </div>
+        </div>
+        <div className="mt-6 grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            className="inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className="inline-flex justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
+            onClick={onConfirm}
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default DeveloperDashboard;

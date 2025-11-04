@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Code, Briefcase, TrendingUp, Loader2 } from "lucide-react";
 import { cn } from "../lib/utils";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 type UserRole = "developer" | "employer" | "investor";
 
@@ -46,8 +47,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
-
+  //   const navigate = useNavigate();
+  const { login } = useAuth();
   const currentTheme = themes[activeRole];
   const primaryColor = currentTheme.primary;
 
@@ -60,28 +61,14 @@ const Login = () => {
     setTimeout(() => {
       const user = mockUsers[activeRole];
 
-      // --- Add these console logs for debugging ---
-      console.log("Attempting login for role:", activeRole);
-      console.log("Form input - Email:", email);
-      console.log("Form input - Password:", password);
-      console.log("Expected credentials:", user);
-      // -----------------------------------------
-
       if (email === user.email && password === user.password) {
         console.log("Login Successful for:", activeRole.toUpperCase());
-        console.log("User Data:", user);
-
-        // Redirect based on role
-        if (activeRole === "developer") {
-          navigate("/dashboard/developer");
-        } else {
-          // Placeholder for other roles
-          navigate("/marketplace");
-        }
+        const { password, ...userData } = user; // Don't store password
+        login(userData, activeRole);
       } else {
         setError("Invalid email or password.");
+        setIsLoading(false);
       }
-      setIsLoading(false);
     }, 1500);
   };
 
