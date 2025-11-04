@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Marketplace from "./pages/Marketplace";
 import AgentDetail from "./pages/AgentDetail";
 import SubmitAgent from "./pages/SubmitAgent";
+import Login from "./pages/Login";
+import DeveloperDashboard from "./pages/dashboards/DeveloperDashboard";
 // Import other pages as we build them
 
 function App() {
@@ -20,6 +22,11 @@ function App() {
             <Route path="/agent/:id" element={<AgentDetail />} />
             {/* <Route path="/profile" element={<Profile />} /> */}
             <Route path="/submit" element={<SubmitAgent />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/dashboard/developer"
+              element={<DeveloperDashboard />}
+            />
             {/* <Route path="/business" element={<BusinessSolutions />} /> */}
           </Routes>
         </main>

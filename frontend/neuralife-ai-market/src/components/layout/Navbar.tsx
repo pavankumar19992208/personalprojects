@@ -45,7 +45,7 @@ const Navbar = () => {
               </Link>
             ))}
             <Link
-              to="/profile"
+              to="/login"
               className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors"
             >
               Dashboard
@@ -87,7 +87,7 @@ const Navbar = () => {
               </Link>
             ))}
             <Link
-              to="/profile"
+              to="/login"
               onClick={() => setIsOpen(false)}
               className="block bg-primary-600 text-white px-3 py-2 rounded-md text-base font-medium text-center"
             >
