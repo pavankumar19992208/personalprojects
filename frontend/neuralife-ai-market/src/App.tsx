@@ -6,7 +6,7 @@ import Marketplace from "./pages/Marketplace";
 import AgentDetail from "./pages/AgentDetail";
 import SubmitAgent from "./pages/SubmitAgent";
 import Login from "./pages/Login";
-import DeveloperDashboard from "./pages/dashboards/DeveloperDashboard";
+import DeveloperDashboard from "./pages/dashboards/DeveloperDashBoard";
 // Import other pages as we build them
 
 function App() {
