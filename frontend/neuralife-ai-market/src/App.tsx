@@ -14,7 +14,7 @@ import Login from "./pages/Login";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Documentation from "./pages/Documentation";
-import DeveloperDashboard from "./pages/dashboards/DeveloperDashboard";
+import DeveloperDashboard from "./pages/dashboards/developerDashboard";
 
 function App() {
   return (
