@@ -8,6 +8,7 @@ import {
   Briefcase,
   ArrowRight,
   Star,
+  BookOpen,
 } from "lucide-react";
 
 const Home = () => {
@@ -81,6 +82,13 @@ const Home = () => {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <Link
+                to="/documentation"
+                className="bg-white text-primary-600 border-2 border-primary-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-primary-50 transition-colors inline-flex items-center justify-center"
+              >
+                <BookOpen className="mr-2 h-5 w-5" />
+                Read the Docs
+              </Link>
+              <Link
                 to="/submit"
                 className="bg-white text-primary-600 border-2 border-primary-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary-50 transition-colors inline-flex items-center justify-center"
               >
@@ -131,12 +139,19 @@ const Home = () => {
                   {feature.title}
                 </h3>
                 <p className="text-gray-600">{feature.description}</p>
+                {feature.title === "Learn & Grow" && (
+                  <Link
+                    to="/documentation"
+                    className="text-primary-600 hover:text-primary-700 font-semibold mt-4 inline-flex items-center"
+                  >
+                    Start Learning <ArrowRight className="ml-1 h-4 w-4" />
+                  </Link>
+                )}
               </div>
             ))}
           </div>
         </div>
       </section>
-
       {/* CTA Section */}
       <section className="py-20 bg-primary-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
