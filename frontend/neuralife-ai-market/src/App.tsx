@@ -11,7 +11,7 @@ import Marketplace from "./pages/Marketplace";
 import AgentDetail from "./pages/AgentDetail";
 import SubmitAgent from "./pages/SubmitAgent";
 import Login from "./pages/Login";
-import DeveloperDashboard from "./pages/dashboards/DeveloperDashboard";
+import DeveloperDashboard from "./pages/dashboards/developerdashboard";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Documentation from "./pages/Documentation";
