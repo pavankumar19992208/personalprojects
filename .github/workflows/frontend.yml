@@ -1,0 +1,78 @@
+name: Deploy All Frontend Apps to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    # Trigger if changes happen in frontend or root
+    paths:
+      - "frontend/**"
+      - "index.html"
+      - ".github/workflows/**"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          # We cache npm for amazon-sde-prep and yarn for others if needed
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+
+      # --- 1. Build Neuralife AI Market (Existing) ---
+      - name: Build Neuralife AI Market
+        run: |
+          cd frontend/neuralife-ai-market
+          yarn install --frozen-lockfile
+          yarn build
+          cd ../..
+
+      # --- 2. Build Amazon SDE Prep (NEW) ---
+      - name: Build Amazon SDE Prep
+        run: |
+          cd frontend/amazon-sde-prep
+          npm ci
+          npm run build
+          cd ../..
+
+      # --- Assemble Site for Deployment ---
+      - name: Assemble site
+        run: |
+          # Create the root directory for deployment
+          mkdir -p _site/neuralife-ai-market
+          mkdir -p _site/amazonsde1prep
+
+          # Copy the root landing page
+          cp index.html _site/
+
+          # Copy Neuralife
+          cp -r frontend/neuralife-ai-market/dist/* _site/neuralife-ai-market/
+
+          # Copy Amazon SDE Prep
+          cp -r frontend/amazon-sde-prep/dist/* _site/amazonsde1prep/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Print deployment URL
+        run: 'echo "Page deployed at: ${{ steps.deployment.outputs.page_url }}amazonsde1prep/"'
