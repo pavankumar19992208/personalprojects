@@ -18,7 +18,7 @@ import DeveloperDashboard from "./pages/dashboards/developerDashboard";
 
 function App() {
   return (
-    <Router basename="/personalprojects/neuralife-ai-market">
+    <Router basename={import.meta.env.BASE_URL}>
       <AuthProvider>
         <div className="flex flex-col min-h-screen">
           <Navbar />
