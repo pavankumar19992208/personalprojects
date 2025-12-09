@@ -13,6 +13,7 @@ interface DashboardProps {
     color: string;
   };
   completedCount: number;
+  onPhaseClick: (phaseId: string) => void;
 }
 
 // Helper for Tailwind dynamic colors
@@ -88,6 +89,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
   progress,
   pace,
   completedCount,
+  onPhaseClick,
 }) => {
   // Determine color for Pace card based on status
   const getPaceColor = () => {
@@ -163,7 +165,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
               Math.round((phaseDone / phaseTotal) * 100) || 0;
 
             return (
-              <div key={phase.id}>
+              <div
+                key={phase.id}
+                onClick={() => onPhaseClick(phase.id)}
+                className="cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 p-2 -mx-2 rounded-lg transition-colors"
+              >
                 <div className="flex justify-between mb-1 sm:mb-2 text-xs sm:text-sm">
                   <span className="text-slate-600 dark:text-slate-300 font-medium truncate pr-2">
                     {phase.title}

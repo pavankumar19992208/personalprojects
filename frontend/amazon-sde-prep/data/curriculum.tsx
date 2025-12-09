@@ -8,7 +8,7 @@ export const CURRICULUM: Record<string, CurriculumPhase> = {
     topics: [
       {
         id: "dsa-arrays",
-        title: "Arrays & Hashing (Day 1)",
+        title: "Arrays & Hashing",
         phase: "DSA",
         difficulty: "Easy/Med",
         priority: "Critical",
@@ -49,7 +49,7 @@ HashMaps (Dictionaries) are the #1 tool in OA. Know internal collision handling 
       },
       {
         id: "dsa-window",
-        title: "Sliding Window (Day 2-3)",
+        title: "Sliding Window",
         phase: "DSA",
         difficulty: "Medium",
         priority: "Critical",
@@ -86,7 +86,7 @@ Used for "Anomaly Detection in Logs" and "Clickstream Analysis".
       },
       {
         id: "dsa-pointers",
-        title: "Two Pointers & Stack (Day 3-4)",
+        title: "Two Pointers & Stack",
         phase: "DSA",
         difficulty: "Medium",
         priority: "High",
@@ -128,7 +128,7 @@ Used to find "Next Greater Element" or "Previous Smaller Element" in O(N).
       },
       {
         id: "dsa-binary",
-        title: "Binary Search (Day 4)",
+        title: "Binary Search",
         phase: "DSA",
         difficulty: "Medium",
         priority: "Medium",
@@ -164,7 +164,7 @@ Used when the answer is a value (e.g., min speed to eat bananas) rather than an 
       },
       {
         id: "dsa-linkedlist",
-        title: "Linked Lists (Day 5)",
+        title: "Linked Lists",
         phase: "DSA",
         difficulty: "Easy/Med",
         priority: "Medium",
@@ -202,7 +202,7 @@ Used when the answer is a value (e.g., min speed to eat bananas) rather than an 
       },
       {
         id: "dsa-trees",
-        title: "Trees BFS/DFS (Day 6-7)",
+        title: "Trees BFS/DFS",
         phase: "DSA",
         difficulty: "Medium",
         priority: "Critical",
@@ -244,7 +244,7 @@ Used when the answer is a value (e.g., min speed to eat bananas) rather than an 
       },
       {
         id: "dsa-heaps",
-        title: "Heaps / Priority Queue (Day 8)",
+        title: "Heaps / Priority Queue",
         phase: "DSA",
         difficulty: "Medium",
         priority: "High",
@@ -281,7 +281,7 @@ Efficiently access the Min or Max element in O(1).
       },
       {
         id: "dsa-graphs-basic",
-        title: "Graphs: Basics (Day 10)",
+        title: "Graphs: Basics",
         phase: "DSA",
         difficulty: "Medium",
         priority: "Critical",
@@ -314,7 +314,7 @@ Use DFS/BFS to flood fill, count islands, or find shortest path in an unweighted
       },
       {
         id: "dsa-dp",
-        title: "Dynamic Programming (Day 11 & 15)",
+        title: "Dynamic Programming",
         phase: "DSA",
         difficulty: "Medium/Hard",
         priority: "Medium",
@@ -397,7 +397,7 @@ BFS + Priority Queue. Finds shortest path in weighted graphs (Network Delay).
       },
       {
         id: "dsa-tries",
-        title: "Tries & Union-Find (Day 19)",
+        title: "Tries & Union-Find",
         phase: "DSA",
         difficulty: "Hard",
         priority: "Medium",

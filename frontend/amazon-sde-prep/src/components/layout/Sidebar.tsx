@@ -10,13 +10,14 @@ import {
   Moon,
 } from "lucide-react";
 import type { UserSettings } from "../../../types";
-import { useTheme } from "../../context/ThemeContext"; // Import useTheme
+import { useTheme } from "../../context/ThemeContext";
 
 interface SidebarProps {
   user: UserSettings;
   activeView: "dashboard" | "curriculum" | "resources";
   setActiveView: (view: "dashboard" | "curriculum" | "resources") => void;
   percentage: number;
+  shouldCollapse?: boolean;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -24,14 +25,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
   activeView,
   setActiveView,
   percentage,
+  shouldCollapse = false,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showMobileNav, setShowMobileNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const { theme, toggleTheme } = useTheme(); // Use theme context
+  const { theme, toggleTheme } = useTheme();
 
-  // ... (existing resize and scroll logic) ...
+  // Auto-collapse effect
+  useEffect(() => {
+    if (shouldCollapse && !isMobile) {
+      setIsCollapsed(true);
+    }
+  }, [shouldCollapse, isMobile]);
+
   // Handle resize for mobile detection
   useEffect(() => {
     const handleResize = () => {
@@ -126,7 +134,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </button>
 
       {/* Header */}
-      <div className="p-6 border-b border-slate-200 dark:border-slate-800 overflow-hidden whitespace-nowrap">
+      <div className="p-6 border-b border-slate-200 dark:border-slate-800 overflow-hidden whitespace-nowrap flex-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-orange-600 dark:text-orange-500 font-bold text-xl tracking-wider">
             <Terminal size={24} className="shrink-0" />
@@ -167,7 +175,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Navigation */}
-      <div className="flex-1 py-6 space-y-1">
+      <div className="flex-1 py-6 space-y-1 overflow-y-auto scrollbar-none">
         <NavButton
           active={activeView === "dashboard"}
           onClick={() => setActiveView("dashboard")}
@@ -192,7 +200,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Footer / Progress */}
-      <div className="p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 overflow-hidden">
+      <div className="p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 overflow-hidden flex-none">
         <div
           className={`flex justify-between mb-2 text-xs font-mono transition-opacity duration-200 ${
             isCollapsed ? "opacity-0 hidden" : "opacity-100"

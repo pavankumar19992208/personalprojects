@@ -19,7 +19,16 @@ import {
   DbVisual,
   NetworkVisual,
 } from "../visuals/TopicVisuals";
-
+import { ArraysHashingGuide } from "./dsatopics/ArraysHashingGuide";
+import { SlidingWindowGuide } from "./dsatopics/SlidingWindowGuide";
+import TwoPointersGuide from "./dsatopics/TwoPointersGuide";
+import BinarySearchGuide from "./dsatopics/BinarySearchGuide";
+import LinkedListGuide from "./dsatopics/LinkedListGuide";
+import TreeGuide from "./dsatopics/TreeGuide";
+import GraphGuide from "./dsatopics/GraphGuide";
+import HeapGuide from "./dsatopics/HeapGuide";
+import DPGuide from "./dsatopics/DPGuide";
+import TrieGuide from "./dsatopics/TrieGuide";
 interface TopicDetailProps {
   topic: Topic;
   isCompleted: boolean;
@@ -53,6 +62,18 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
         return null;
     }
   };
+
+  // Special case for Arrays & Hashing to show the full guide
+  const isArraysHashing = topic.title === "Arrays & Hashing";
+  const isSlidingWindow = topic.title.includes("Sliding Window");
+  const isTwoPointers = topic.title.includes("Two Pointers"); // Check for Two Pointers topic
+  const isBinarySearch = topic.title.includes("Binary Search"); // Check for Binary Search
+  const isLinkedList = topic.title.includes("Linked Lists"); // Check for Linked List topic
+  const isTree = topic.title.includes("Trees"); // Check for Tree topic
+  const isGraph = topic.title.includes("Graphs: Basics"); // Check for Graph topic
+  const isHeap = topic.title.includes("Heaps / Priority Queue"); // Check for Heap topic
+  const isDP = topic.title.includes("Dynamic Programming"); // Check for DP topic
+  const isTrie = topic.title.includes("Tries & Union-Find"); // Check for Trie topic
 
   return (
     <div className="h-full flex flex-col bg-slate-50 dark:bg-slate-950 animate-in fade-in">
@@ -97,50 +118,72 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
 
       <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-3 pb-20 sm:pb-0">
         {/* LEFT COLUMN: EXPLANATION */}
-        <div className="lg:col-span-2 overflow-y-auto p-8 border-r border-slate-200 dark:border-slate-800 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-800">
-          <div className="prose prose-slate dark:prose-invert max-w-none">
-            {renderVisual()}
+        <div className="lg:col-span-2 overflow-y-auto p-4 sm:p-8 border-r border-slate-200 dark:border-slate-800 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-800">
+          {isArraysHashing ? (
+            <ArraysHashingGuide />
+          ) : isSlidingWindow ? (
+            <SlidingWindowGuide />
+          ) : isTwoPointers ? (
+            <TwoPointersGuide />
+          ) : isBinarySearch ? (
+            <BinarySearchGuide />
+          ) : isLinkedList ? (
+            <LinkedListGuide />
+          ) : isTree ? (
+            <TreeGuide />
+          ) : isGraph ? (
+            <GraphGuide />
+          ) : isHeap ? (
+            <HeapGuide />
+          ) : isDP ? (
+            <DPGuide />
+          ) : isTrie ? (
+            <TrieGuide />
+          ) : (
+            <div className="prose prose-slate dark:prose-invert max-w-none">
+              {renderVisual()}
 
-            <div className="whitespace-pre-wrap text-slate-600 dark:text-slate-300 leading-relaxed font-light">
-              {topic.explanation.split("\n").map((line, i) => {
-                if (line.trim().startsWith("###"))
+              <div className="whitespace-pre-wrap text-slate-600 dark:text-slate-300 leading-relaxed font-light">
+                {topic.explanation.split("\n").map((line, i) => {
+                  if (line.trim().startsWith("###"))
+                    return (
+                      <h3
+                        key={i}
+                        className="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-4 border-l-4 border-orange-500 pl-3"
+                      >
+                        {line.replace("###", "")}
+                      </h3>
+                    );
+                  if (line.trim().startsWith("*"))
+                    return (
+                      <li
+                        key={i}
+                        className="ml-4 text-slate-600 dark:text-slate-300 list-disc marker:text-orange-500"
+                      >
+                        {line.replace("*", "")}
+                      </li>
+                    );
                   return (
-                    <h3
-                      key={i}
-                      className="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-4 border-l-4 border-orange-500 pl-3"
-                    >
-                      {line.replace("###", "")}
-                    </h3>
+                    <p key={i} className="mb-3">
+                      {line}
+                    </p>
                   );
-                if (line.trim().startsWith("*"))
-                  return (
-                    <li
-                      key={i}
-                      className="ml-4 text-slate-600 dark:text-slate-300 list-disc marker:text-orange-500"
-                    >
-                      {line.replace("*", "")}
-                    </li>
-                  );
-                return (
-                  <p key={i} className="mb-3">
-                    {line}
-                  </p>
-                );
-              })}
-            </div>
+                })}
+              </div>
 
-            <div className="mt-8 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-4">
-              <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-mono text-sm mb-2">
-                <Bot size={16} /> AI PROMPT
+              <div className="mt-8 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+                <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-mono text-sm mb-2">
+                  <Bot size={16} /> AI PROMPT
+                </div>
+                <div className="bg-white dark:bg-black/50 p-3 rounded text-slate-600 dark:text-slate-400 font-mono text-xs mb-3 border border-slate-200 dark:border-transparent">
+                  {topic.prompt}
+                </div>
+                <button className="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  <Copy size={12} /> Copy to Clipboard
+                </button>
               </div>
-              <div className="bg-white dark:bg-black/50 p-3 rounded text-slate-600 dark:text-slate-400 font-mono text-xs mb-3 border border-slate-200 dark:border-transparent">
-                {topic.prompt}
-              </div>
-              <button className="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
-                <Copy size={12} /> Copy to Clipboard
-              </button>
             </div>
-          </div>
+          )}
         </div>
 
         {/* RIGHT COLUMN: PROBLEMS & METRICS */}

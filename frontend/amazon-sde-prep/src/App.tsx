@@ -17,6 +17,7 @@ function AppContent() {
   >("dashboard");
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
   const [progress, setProgress] = useState<ProgressState>({});
+  const [targetPhase, setTargetPhase] = useState<string | null>(null);
 
   // LOAD DATA
   useEffect(() => {
@@ -62,6 +63,10 @@ function AppContent() {
 
     return { daysLeft, unitsPerDay: unitsPerDay.toFixed(1), status, color };
   };
+  const handlePhaseClick = (phaseId: string) => {
+    setActiveView("curriculum");
+    setTargetPhase(phaseId);
+  };
 
   // RENDER IF NOT LOGGED IN
   if (!user) return <LoginScreen onLogin={handleLogin} />;
@@ -84,6 +89,7 @@ function AppContent() {
           setSelectedTopic(null);
         }}
         percentage={percentage}
+        shouldCollapse={!!selectedTopic}
       />
 
       <main className="flex-1 relative overflow-hidden flex flex-col">
@@ -127,6 +133,7 @@ function AppContent() {
                 progress={progress}
                 pace={pace}
                 completedCount={completedCount}
+                onPhaseClick={handlePhaseClick}
               />
             )}
 
@@ -134,6 +141,7 @@ function AppContent() {
               <CurriculumBoard
                 progress={progress}
                 onSelectTopic={setSelectedTopic}
+                scrollToPhase={targetPhase}
               />
             )}
 

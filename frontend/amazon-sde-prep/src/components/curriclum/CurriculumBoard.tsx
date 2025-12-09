@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CheckCircle2 } from "lucide-react";
 import type { Topic, ProgressState } from "../../../types";
 import { CURRICULUM } from "../../../data/curriculum";
@@ -6,12 +6,23 @@ import { CURRICULUM } from "../../../data/curriculum";
 interface CurriculumBoardProps {
   progress: ProgressState;
   onSelectTopic: (topic: Topic) => void;
+  scrollToPhase?: string | null;
 }
 
 export const CurriculumBoard: React.FC<CurriculumBoardProps> = ({
   progress,
   onSelectTopic,
+  scrollToPhase,
 }) => {
+  useEffect(() => {
+    if (scrollToPhase) {
+      const element = document.getElementById(scrollToPhase);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  }, [scrollToPhase]);
+
   return (
     <div className="max-w-6xl mx-auto space-y-12 animate-in zoom-in-95 pb-20 sm:pb-0">
       <header>
@@ -24,7 +35,7 @@ export const CurriculumBoard: React.FC<CurriculumBoardProps> = ({
       </header>
 
       {Object.values(CURRICULUM).map((phase) => (
-        <div key={phase.id}>
+        <div key={phase.id} id={phase.id} className="scroll-mt-8">
           <div className="flex items-center gap-4 mb-6">
             <div
               className={`h-px flex-1 ${

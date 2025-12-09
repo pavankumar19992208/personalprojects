@@ -19,9 +19,9 @@ export const SubjectDetail: React.FC<SubjectDetailProps> = ({
   const isDBMSTopic = topic.id === "cs-dbms";
 
   return (
-    <div className="h-full flex flex-col bg-slate-50 dark:bg-slate-950 animate-in slide-in-from-right duration-300">
-      {/* Header */}
-      <div className="bg-white/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 p-6 flex items-center gap-4 sticky top-0 z-20 backdrop-blur-md">
+    <div className="h-full flex flex-col bg-slate-50 dark:bg-slate-950 animate-in slide-in-from-right duration-300 overflow-hidden">
+      {/* Header - Fixed */}
+      <div className="bg-white/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 p-6 flex items-center gap-4 z-20 backdrop-blur-md flex-none">
         <button
           onClick={onBack}
           className="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
@@ -49,9 +49,9 @@ export const SubjectDetail: React.FC<SubjectDetailProps> = ({
         </div>
       ) : (
         /* STANDARD LAYOUT FOR OTHER SUBJECTS (DBMS, LLD) */
-        <div className="flex-1 overflow-y-auto p-8 grid grid-cols-1 lg:grid-cols-3 gap-8 pb-24 sm:pb-8">
+        <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-3 pb-24 sm:pb-0">
           {/* LEFT COL: IMPORTANCE & INFO */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="lg:col-span-1 h-full overflow-y-auto p-6 space-y-6 border-r border-slate-200 dark:border-slate-800">
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm dark:shadow-none">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                 <AlertTriangle className="text-orange-500" size={20} />
@@ -75,7 +75,7 @@ export const SubjectDetail: React.FC<SubjectDetailProps> = ({
           </div>
 
           {/* RIGHT COL: SUB-TOPICS LIST */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 h-full overflow-y-auto p-6">
             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
               <BookOpen
                 className="text-cyan-600 dark:text-cyan-400"
