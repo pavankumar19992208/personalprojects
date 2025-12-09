@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   ArrowRight,
   ArrowLeft,
   Copy,
   Check,
   Brain,
-  Calculator,
-  Home,
-  Grid,
-  Table,
-  ArrowDown,
-  CornerDownRight,
+  // Calculator,
+  // Home,
+  // Grid,
+  // Table,
+  // ArrowDown,
+  // CornerDownRight,
 } from "lucide-react";
 
 const CodeBlock = ({ code }: { code: string }) => {
