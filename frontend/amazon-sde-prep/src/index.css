@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Force dark mode class strategy for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Custom Scrollbar for the Cyberpunk feel */
 ::-webkit-scrollbar {
   width: 8px;
