@@ -9,6 +9,7 @@ import { TopicDetail } from "./components/curriclum/TopicDetail";
 import { Resources } from "./components/resources/Resources";
 import { SubjectDetail } from "./components/curriclum/SubjectDetail";
 import { ThemeProvider } from "./context/ThemeContext";
+import { api } from "./api/client";
 
 function AppContent() {
   const [user, setUser] = useState<UserSettings | null>(null);
@@ -18,21 +19,72 @@ function AppContent() {
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
   const [progress, setProgress] = useState<ProgressState>({});
   const [targetPhase, setTargetPhase] = useState<string | null>(null);
+  const [bookmarks, setBookmarks] = useState<Record<string, number>>({}); // <--- New State
 
   // LOAD DATA
   useEffect(() => {
     const savedUser = localStorage.getItem("amazon_sde_user");
     const savedProgress = localStorage.getItem("amazon_sde_progress");
+    const savedBookmarks = localStorage.getItem("amazon_sde_bookmarks"); // <--- Load bookmarks
+
     if (savedUser) setUser(JSON.parse(savedUser));
     if (savedProgress) setProgress(JSON.parse(savedProgress));
+    if (savedBookmarks) setBookmarks(JSON.parse(savedBookmarks));
   }, []);
 
-  // LOGIN HANDLER
-  const handleLogin = (settings: UserSettings) => {
-    setUser(settings);
-    localStorage.setItem("amazon_sde_user", JSON.stringify(settings));
+  const handleLogin = (data: any) => {
+    const userSettings = {
+      name: data.user.name,
+      targetDate: data.user.target_date,
+      experienceLevel: data.user.experience_level,
+    };
+    setUser(userSettings);
+    setProgress(data.progress || {});
+    setBookmarks(data.bookmarks || {});
+
+    localStorage.setItem("amazon_sde_user", JSON.stringify(userSettings));
+    localStorage.setItem(
+      "amazon_sde_progress",
+      JSON.stringify(data.progress || {})
+    );
+    localStorage.setItem(
+      "amazon_sde_bookmarks",
+      JSON.stringify(data.bookmarks || {})
+    );
   };
 
+  // LOGOUT HANDLER
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("amazon_sde_user");
+    localStorage.removeItem("token");
+  };
+  const handleToggleComplete = async (topicId: string) => {
+    const newStatus = !progress[topicId];
+    const newProg = { ...progress, [topicId]: newStatus };
+
+    setProgress(newProg);
+    localStorage.setItem("amazon_sde_progress", JSON.stringify(newProg));
+
+    // Sync with backend
+    try {
+      await api.syncProgress(topicId, newStatus);
+    } catch (e) {
+      console.error("Failed to sync progress", e);
+    }
+  };
+  const handleBookmarkUpdate = async (topicId: string, pageIndex: number) => {
+    const newBookmarks = { ...bookmarks, [topicId]: pageIndex };
+    setBookmarks(newBookmarks);
+    localStorage.setItem("amazon_sde_bookmarks", JSON.stringify(newBookmarks));
+
+    // Sync with backend
+    try {
+      await api.syncBookmark(topicId, pageIndex);
+    } catch (e) {
+      console.error("Failed to sync bookmark", e);
+    }
+  };
   // PACE CALCULATOR LOGIC
   const getPaceStats = () => {
     if (!user)
@@ -80,7 +132,7 @@ function AppContent() {
   const percentage = Math.round((completedCount / totalTopics) * 100);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-200 font-sans flex overflow-hidden transition-colors duration-300">
+    <div className="h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-200 font-sans flex overflow-hidden transition-colors duration-300">
       <Sidebar
         user={user}
         activeView={activeView}
@@ -90,6 +142,7 @@ function AppContent() {
         }}
         percentage={percentage}
         shouldCollapse={!!selectedTopic}
+        onLogout={handleLogout}
       />
 
       <main className="flex-1 relative overflow-hidden flex flex-col">
@@ -112,17 +165,11 @@ function AppContent() {
             <TopicDetail
               topic={selectedTopic}
               isCompleted={!!progress[selectedTopic.id]}
-              onToggleComplete={() => {
-                const newProg = {
-                  ...progress,
-                  [selectedTopic.id]: !progress[selectedTopic.id],
-                };
-                setProgress(newProg);
-                localStorage.setItem(
-                  "amazon_sde_progress",
-                  JSON.stringify(newProg)
-                );
-              }}
+              onToggleComplete={() => handleToggleComplete(selectedTopic.id)}
+              initialPage={bookmarks[selectedTopic.id] || 0} // <--- Pass initial page
+              onPageChange={(page) =>
+                handleBookmarkUpdate(selectedTopic.id, page)
+              } // <--- Pass handler
             />
           )
         ) : (

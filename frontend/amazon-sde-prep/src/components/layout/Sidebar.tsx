@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Sun,
   Moon,
+  LogOut,
 } from "lucide-react";
 import type { UserSettings } from "../../../types";
 import { useTheme } from "../../context/ThemeContext";
@@ -18,6 +19,7 @@ interface SidebarProps {
   setActiveView: (view: "dashboard" | "curriculum" | "resources") => void;
   percentage: number;
   shouldCollapse?: boolean;
+  onLogout: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -26,6 +28,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   setActiveView,
   percentage,
   shouldCollapse = false,
+  onLogout,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -73,12 +76,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
     return (
       <>
         {/* Mobile Theme Toggle (Floating) */}
-        <button
-          onClick={toggleTheme}
-          className="fixed top-4 right-4 z-50 p-2 rounded-full bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400"
-        >
-          {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-        </button>
+        <div className="fixed top-4 right-4 z-50 flex gap-2">
+          <button
+            onClick={onLogout}
+            className="p-2 rounded-full bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700 text-red-600 dark:text-red-400"
+          >
+            <LogOut size={20} />
+          </button>
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-full bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400"
+          >
+            {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+        </div>
 
         <nav
           className={`fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 z-50 transition-transform duration-300 ease-in-out ${
@@ -146,14 +157,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
               SDE:PREP
             </span>
           </div>
-          {/* Desktop Theme Toggle */}
+          {/* Desktop Theme & Logout Toggle */}
           {!isCollapsed && (
-            <button
-              onClick={toggleTheme}
-              className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors"
-            >
-              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={toggleTheme}
+                className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors"
+                title="Toggle Theme"
+              >
+                {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+              </button>
+              <button
+                onClick={onLogout}
+                className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                title="Logout"
+              >
+                <LogOut size={18} />
+              </button>
+            </div>
           )}
         </div>
 
@@ -222,14 +243,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {percentage}%
           </div>
         )}
-        {/* Collapsed Theme Toggle */}
+        {/* Collapsed Theme & Logout Toggle */}
         {isCollapsed && (
-          <button
-            onClick={toggleTheme}
-            className="mt-4 w-full flex justify-center p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors"
-          >
-            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
+          <div className="mt-4 flex flex-col gap-2">
+            <button
+              onClick={toggleTheme}
+              className="w-full flex justify-center p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors"
+              title="Toggle Theme"
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+            <button
+              onClick={onLogout}
+              className="w-full flex justify-center p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+              title="Logout"
+            >
+              <LogOut size={18} />
+            </button>
+          </div>
         )}
       </div>
     </nav>

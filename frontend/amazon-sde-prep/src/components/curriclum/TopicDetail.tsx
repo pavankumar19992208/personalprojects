@@ -29,16 +29,21 @@ import GraphGuide from "./dsatopics/GraphGuide";
 import HeapGuide from "./dsatopics/HeapGuide";
 import DPGuide from "./dsatopics/DPGuide";
 import TrieGuide from "./dsatopics/TrieGuide";
+
 interface TopicDetailProps {
   topic: Topic;
   isCompleted: boolean;
   onToggleComplete: () => void;
+  initialPage?: number; // <--- Added
+  onPageChange?: (page: number) => void; // <--- Added
 }
 
 export const TopicDetail: React.FC<TopicDetailProps> = ({
   topic,
   isCompleted,
   onToggleComplete,
+  initialPage, // <--- Destructured
+  onPageChange, // <--- Destructured
 }) => {
   const renderVisual = () => {
     switch (topic.visualType) {
@@ -66,19 +71,19 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
   // Special case for Arrays & Hashing to show the full guide
   const isArraysHashing = topic.title === "Arrays & Hashing";
   const isSlidingWindow = topic.title.includes("Sliding Window");
-  const isTwoPointers = topic.title.includes("Two Pointers"); // Check for Two Pointers topic
-  const isBinarySearch = topic.title.includes("Binary Search"); // Check for Binary Search
-  const isLinkedList = topic.title.includes("Linked Lists"); // Check for Linked List topic
-  const isTree = topic.title.includes("Trees"); // Check for Tree topic
-  const isGraph = topic.title.includes("Graphs: Basics"); // Check for Graph topic
-  const isHeap = topic.title.includes("Heaps / Priority Queue"); // Check for Heap topic
-  const isDP = topic.title.includes("Dynamic Programming"); // Check for DP topic
-  const isTrie = topic.title.includes("Tries & Union-Find"); // Check for Trie topic
+  const isTwoPointers = topic.title.includes("Two Pointers");
+  const isBinarySearch = topic.title.includes("Binary Search");
+  const isLinkedList = topic.title.includes("Linked Lists");
+  const isTree = topic.title.includes("Trees");
+  const isGraph = topic.title.includes("Graphs: Basics");
+  const isHeap = topic.title.includes("Heaps / Priority Queue");
+  const isDP = topic.title.includes("Dynamic Programming");
+  const isTrie = topic.title.includes("Tries & Union-Find");
 
   return (
-    <div className="h-full flex flex-col bg-slate-50 dark:bg-slate-950 animate-in fade-in">
-      {/* Header */}
-      <div className="bg-white/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 p-6 flex justify-between items-center sticky top-0 z-20 backdrop-blur">
+    <div className="h-full flex flex-col bg-slate-50 dark:bg-slate-950 animate-in fade-in overflow-hidden">
+      {/* Header - Fixed at top */}
+      <div className="bg-white/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 p-6 flex justify-between items-center z-20 backdrop-blur flex-none">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span
@@ -116,11 +121,15 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
         </button>
       </div>
 
-      <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-3 pb-20 sm:pb-0">
+      {/* Content Area */}
+      <div className="flex-1 overflow-y-auto lg:overflow-hidden lg:grid lg:grid-cols-3 pb-20 sm:pb-0">
         {/* LEFT COLUMN: EXPLANATION */}
-        <div className="lg:col-span-2 overflow-y-auto p-4 sm:p-8 border-r border-slate-200 dark:border-slate-800 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-800">
+        <div className="lg:col-span-2 lg:h-full lg:overflow-y-auto p-4 sm:p-8 border-r border-slate-200 dark:border-slate-800 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-800">
           {isArraysHashing ? (
-            <ArraysHashingGuide />
+            <ArraysHashingGuide
+              initialPage={initialPage}
+              onPageChange={onPageChange}
+            />
           ) : isSlidingWindow ? (
             <SlidingWindowGuide />
           ) : isTwoPointers ? (
@@ -187,7 +196,7 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
         </div>
 
         {/* RIGHT COLUMN: PROBLEMS & METRICS */}
-        <div className="lg:col-span-1 bg-slate-50 dark:bg-slate-900/30 overflow-y-auto p-6 space-y-6">
+        <div className="lg:col-span-1 lg:h-full bg-slate-50 dark:bg-slate-900/30 lg:overflow-y-auto p-6 space-y-6 border-t lg:border-t-0 border-slate-200 dark:border-slate-800">
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm dark:shadow-none">
             <h4 className="text-xs font-mono text-slate-500 uppercase mb-4">
               Amazon Frequency

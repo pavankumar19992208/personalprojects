@@ -5,18 +5,54 @@ import {
   Calendar,
   ChevronRight,
   Briefcase,
+  Mail,
+  Lock,
+  Loader2,
 } from "lucide-react";
 import type { UserSettings } from "../../../types";
+import { api } from "../../api/client";
 
 interface LoginScreenProps {
-  onLogin: (settings: UserSettings) => void;
+  onLogin: (data: any) => void; // Changed type to accept full data
 }
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
+  const [isLoginMode, setIsLoginMode] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Form State
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [experience, setExperience] =
     useState<UserSettings["experienceLevel"]>("New Grad");
+
+  const handleSubmit = async () => {
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      let response;
+      if (isLoginMode) {
+        response = await api.login(email, password);
+      } else {
+        response = await api.register(email, password, name, date, experience);
+      }
+
+      // Store token
+      localStorage.setItem("token", response.access_token);
+
+      // FIX: Pass the FULL response object to onLogin
+      // The App.tsx handleLogin function expects { user, progress, bookmarks }
+      onLogin(response);
+    } catch (err: any) {
+      setError(err.message || "An error occurred");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center relative overflow-hidden">
@@ -31,90 +67,156 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           SDE-1 MASTERY
         </h1>
         <p className="text-center text-slate-400 mb-8">
-          Amazon Interview Protocol v2025
+          {isLoginMode ? "System Access" : "New Candidate Registration"}
         </p>
 
+        {error && (
+          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm text-center">
+            {error}
+          </div>
+        )}
+
         <div className="space-y-4">
+          {/* Email - Always Visible */}
           <div>
             <label className="block text-xs font-mono text-slate-500 mb-1">
-              CANDIDATE_ID
+              EMAIL_ADDRESS
             </label>
             <div className="relative">
-              <User
+              <Mail
                 className="absolute left-3 top-3 text-slate-600"
                 size={18}
               />
               <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your name"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@example.com"
                 className="w-full bg-slate-950 border border-slate-800 rounded-lg py-3 pl-10 pr-4 text-white focus:border-orange-500 focus:outline-none transition-colors"
               />
             </div>
           </div>
 
+          {/* Password - Always Visible */}
           <div>
             <label className="block text-xs font-mono text-slate-500 mb-1">
-              EXPERIENCE_LEVEL
+              ACCESS_KEY (PASSWORD)
             </label>
             <div className="relative">
-              <Briefcase
-                className="absolute left-3 top-3 text-slate-600"
-                size={18}
-              />
-              <select
-                value={experience}
-                onChange={(e) =>
-                  setExperience(
-                    e.target.value as UserSettings["experienceLevel"]
-                  )
-                }
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg py-3 pl-10 pr-4 text-white focus:border-orange-500 focus:outline-none transition-colors appearance-none"
-              >
-                <option value="Intern">Intern (SDE Intern)</option>
-                <option value="New Grad">New Grad (SDE-1)</option>
-                <option value="Experienced">Experienced (SDE-1/2)</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-mono text-slate-500 mb-1">
-              TARGET_INTERVIEW_DATE
-            </label>
-            <div className="relative">
-              <Calendar
+              <Lock
                 className="absolute left-3 top-3 text-slate-600"
                 size={18}
               />
               <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
                 className="w-full bg-slate-950 border border-slate-800 rounded-lg py-3 pl-10 pr-4 text-white focus:border-orange-500 focus:outline-none transition-colors"
               />
             </div>
           </div>
+
+          {/* Registration Only Fields */}
+          {!isLoginMode && (
+            <>
+              <div>
+                <label className="block text-xs font-mono text-slate-500 mb-1">
+                  CANDIDATE_ID (NAME)
+                </label>
+                <div className="relative">
+                  <User
+                    className="absolute left-3 top-3 text-slate-600"
+                    size={18}
+                  />
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Enter your name"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg py-3 pl-10 pr-4 text-white focus:border-orange-500 focus:outline-none transition-colors"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-mono text-slate-500 mb-1">
+                  EXPERIENCE_LEVEL
+                </label>
+                <div className="relative">
+                  <Briefcase
+                    className="absolute left-3 top-3 text-slate-600"
+                    size={18}
+                  />
+                  <select
+                    value={experience}
+                    onChange={(e) =>
+                      setExperience(
+                        e.target.value as UserSettings["experienceLevel"]
+                      )
+                    }
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg py-3 pl-10 pr-4 text-white focus:border-orange-500 focus:outline-none transition-colors appearance-none"
+                  >
+                    <option value="Intern">Intern (SDE Intern)</option>
+                    <option value="New Grad">New Grad (SDE-1)</option>
+                    <option value="Experienced">Experienced (SDE-1/2)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-mono text-slate-500 mb-1">
+                  TARGET_INTERVIEW_DATE
+                </label>
+                <div className="relative">
+                  <Calendar
+                    className="absolute left-3 top-3 text-slate-600"
+                    size={18}
+                  />
+                  <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg py-3 pl-10 pr-4 text-white focus:border-orange-500 focus:outline-none transition-colors"
+                  />
+                </div>
+              </div>
+            </>
+          )}
 
           <button
-            onClick={() => {
-              if (name && date)
-                onLogin({
-                  name,
-                  targetDate: date,
-                  experienceLevel: experience,
-                });
-            }}
-            disabled={!name || !date}
+            onClick={handleSubmit}
+            disabled={
+              isLoading ||
+              !email ||
+              !password ||
+              (!isLoginMode && (!name || !date))
+            }
             className="w-full bg-orange-600 hover:bg-orange-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg transition-all flex items-center justify-center gap-2 mt-4 group"
           >
-            INITIALIZE_SYSTEM
-            <ChevronRight
-              size={18}
-              className="group-hover:translate-x-1 transition-transform"
-            />
+            {isLoading ? (
+              <Loader2 className="animate-spin" size={18} />
+            ) : (
+              <>
+                {isLoginMode ? "AUTHENTICATE" : "INITIALIZE_SYSTEM"}
+                <ChevronRight
+                  size={18}
+                  className="group-hover:translate-x-1 transition-transform"
+                />
+              </>
+            )}
           </button>
+
+          <div className="text-center mt-4">
+            <button
+              onClick={() => setIsLoginMode(!isLoginMode)}
+              className="text-slate-400 hover:text-orange-400 text-sm transition-colors"
+            >
+              {isLoginMode
+                ? "New candidate? Initialize protocol"
+                : "Already registered? Authenticate"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

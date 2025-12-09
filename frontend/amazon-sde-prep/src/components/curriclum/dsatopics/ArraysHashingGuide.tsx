@@ -1,13 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ChevronLeft,
   ChevronRight,
   CheckCircle2,
-  // Circle,
   ArrowRight,
-  // Database,
-  // Search,
-  // Plus,
   ArrowDown,
 } from "lucide-react";
 
@@ -16,11 +12,37 @@ interface PageContent {
   content: React.ReactNode;
 }
 
-export const ArraysHashingGuide: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(0);
+interface GuideProps {
+  initialPage?: number;
+  onPageChange?: (pageIndex: number) => void;
+  onComplete?: () => void;
+}
+
+export const ArraysHashingGuide: React.FC<GuideProps> = ({
+  initialPage = 0,
+  onPageChange,
+  onComplete,
+}) => {
+  const [currentPage, setCurrentPage] = useState(initialPage);
   const [completedPages, setCompletedPages] = useState<boolean[]>(
     new Array(5).fill(false)
   );
+
+  // Sync internal state if initialPage changes (e.g. loaded from DB)
+  useEffect(() => {
+    setCurrentPage(initialPage);
+
+    // FIX: Mark all previous pages as completed when loading a bookmark
+    if (initialPage > 0) {
+      setCompletedPages((prev) => {
+        const newCompleted = [...prev];
+        for (let i = 0; i < initialPage; i++) {
+          newCompleted[i] = true;
+        }
+        return newCompleted;
+      });
+    }
+  }, [initialPage]);
 
   const markComplete = (pageIndex: number) => {
     const newCompleted = [...completedPages];
@@ -28,16 +50,25 @@ export const ArraysHashingGuide: React.FC = () => {
     setCompletedPages(newCompleted);
   };
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    if (onPageChange) {
+      onPageChange(newPage);
+    }
+  };
+
   const nextPage = () => {
     markComplete(currentPage);
     if (currentPage < pages.length - 1) {
-      setCurrentPage(currentPage + 1);
+      handlePageChange(currentPage + 1);
+    } else if (currentPage === pages.length - 1) {
+      if (onComplete) onComplete();
     }
   };
 
   const prevPage = () => {
     if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
+      handlePageChange(currentPage - 1);
     }
   };
 
@@ -129,9 +160,6 @@ export const ArraysHashingGuide: React.FC = () => {
 
         <button
           onClick={nextPage}
-          disabled={
-            currentPage === pages.length - 1 && completedPages[currentPage]
-          }
           className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-colors ${
             currentPage === pages.length - 1
               ? "bg-green-600 text-white hover:bg-green-500"
