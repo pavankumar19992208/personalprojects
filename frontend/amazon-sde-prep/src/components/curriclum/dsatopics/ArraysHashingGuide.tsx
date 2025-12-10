@@ -23,55 +23,7 @@ export const ArraysHashingGuide: React.FC<GuideProps> = ({
   onPageChange,
   onComplete,
 }) => {
-  const [currentPage, setCurrentPage] = useState(initialPage);
-  const [completedPages, setCompletedPages] = useState<boolean[]>(
-    new Array(5).fill(false)
-  );
-
-  // Sync internal state if initialPage changes (e.g. loaded from DB)
-  useEffect(() => {
-    setCurrentPage(initialPage);
-
-    // FIX: Mark all previous pages as completed when loading a bookmark
-    if (initialPage > 0) {
-      setCompletedPages((prev) => {
-        const newCompleted = [...prev];
-        for (let i = 0; i < initialPage; i++) {
-          newCompleted[i] = true;
-        }
-        return newCompleted;
-      });
-    }
-  }, [initialPage]);
-
-  const markComplete = (pageIndex: number) => {
-    const newCompleted = [...completedPages];
-    newCompleted[pageIndex] = true;
-    setCompletedPages(newCompleted);
-  };
-
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-    if (onPageChange) {
-      onPageChange(newPage);
-    }
-  };
-
-  const nextPage = () => {
-    markComplete(currentPage);
-    if (currentPage < pages.length - 1) {
-      handlePageChange(currentPage + 1);
-    } else if (currentPage === pages.length - 1) {
-      if (onComplete) onComplete();
-    }
-  };
-
-  const prevPage = () => {
-    if (currentPage > 0) {
-      handlePageChange(currentPage - 1);
-    }
-  };
-
+  // MOVED UP: Define pages first so we can use pages.length in hooks
   const pages: PageContent[] = [
     {
       title: "The Primitives – Arrays vs. HashMaps",
@@ -94,6 +46,67 @@ export const ArraysHashingGuide: React.FC<GuideProps> = ({
       content: <Page5Content />,
     },
   ];
+
+  // Safe current page (clamp to last page if bookmark is "5")
+  const safeInitialPage =
+    initialPage >= pages.length ? pages.length - 1 : initialPage;
+
+  const [currentPage, setCurrentPage] = useState(safeInitialPage);
+  const [completedPages, setCompletedPages] = useState<boolean[]>(
+    new Array(pages.length).fill(false)
+  );
+
+  // Sync internal state if initialPage changes
+  useEffect(() => {
+    const safePage =
+      initialPage >= pages.length ? pages.length - 1 : initialPage;
+    setCurrentPage(safePage);
+
+    // FIX: If initialPage is 5 (length), mark ALL pages as true.
+    // If initialPage is 4, mark 0..3 as true.
+    const countToMark =
+      initialPage >= pages.length ? pages.length : initialPage;
+
+    if (countToMark > 0) {
+      setCompletedPages((prev) => {
+        const newCompleted = [...prev];
+        for (let i = 0; i < countToMark; i++) {
+          newCompleted[i] = true;
+        }
+        return newCompleted;
+      });
+    }
+  }, [initialPage, pages.length]);
+
+  const markComplete = (pageIndex: number) => {
+    const newCompleted = [...completedPages];
+    newCompleted[pageIndex] = true;
+    setCompletedPages(newCompleted);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    if (onPageChange) {
+      onPageChange(newPage);
+    }
+  };
+
+  const nextPage = () => {
+    markComplete(currentPage);
+    if (currentPage < pages.length - 1) {
+      handlePageChange(currentPage + 1);
+    } else if (currentPage === pages.length - 1) {
+      // FIX: Save bookmark as "5" (pages.length) to indicate full completion
+      if (onPageChange) onPageChange(pages.length);
+      if (onComplete) onComplete();
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) {
+      handlePageChange(currentPage - 1);
+    }
+  };
 
   const progress = Math.round(
     (completedPages.filter(Boolean).length / pages.length) * 100
@@ -743,7 +756,6 @@ const Page5Content = () => (
     for i in range(len(nums)):
         res[i] = prefix
         prefix *= nums[i]
-        
     postfix = 1
     for i in range(len(nums) - 1, -1, -1):
         res[i] *= postfix

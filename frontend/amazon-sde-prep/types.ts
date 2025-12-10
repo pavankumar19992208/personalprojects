@@ -33,7 +33,7 @@ export interface Topic {
     | "Easy/Med"
     | "Medium/Hard"
     | "Theory";
-  priority: "Critical" | "High" | "Medium";
+  priority: "Critical" | "High" | "Medium" | "Mandatory";
   frequency: string;
   desc: string;
   explanation: string;
@@ -48,7 +48,15 @@ export interface Topic {
     | "db"
     | "network"
     | "os"
+    | "oop-pillars"
+    | "scale-balance"
+    | "pillars"
+    | "factory-belt"
+    | "adapter-plug"
+    | "observer-signal"
+    | "parking-grid"
     | "none";
+  codeSnippet?: string;
   prompt: string;
   problems: Problem[];
   subTopics?: SubTopic[];

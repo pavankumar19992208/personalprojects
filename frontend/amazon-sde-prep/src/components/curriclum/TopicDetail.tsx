@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  ChevronLeft,
   CheckCircle2,
   Circle,
   Bot,
@@ -29,21 +30,24 @@ import GraphGuide from "./dsatopics/GraphGuide";
 import HeapGuide from "./dsatopics/HeapGuide";
 import DPGuide from "./dsatopics/DPGuide";
 import TrieGuide from "./dsatopics/TrieGuide";
+import { OOPGuide } from "./lldtopics/OOPGuide";
 
 interface TopicDetailProps {
   topic: Topic;
   isCompleted: boolean;
   onToggleComplete: () => void;
-  initialPage?: number; // <--- Added
-  onPageChange?: (page: number) => void; // <--- Added
+  initialPage?: number;
+  onPageChange?: (page: number) => void;
+  onBack: () => void;
 }
 
 export const TopicDetail: React.FC<TopicDetailProps> = ({
   topic,
   isCompleted,
   onToggleComplete,
-  initialPage, // <--- Destructured
-  onPageChange, // <--- Destructured
+  initialPage,
+  onPageChange,
+  onBack,
 }) => {
   const renderVisual = () => {
     switch (topic.visualType) {
@@ -79,35 +83,63 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
   const isHeap = topic.title.includes("Heaps / Priority Queue");
   const isDP = topic.title.includes("Dynamic Programming");
   const isTrie = topic.title.includes("Tries & Union-Find");
+  const isOOP = topic.id === "lld-oop";
+
+  const isInteractiveGuide =
+    isArraysHashing ||
+    isSlidingWindow ||
+    isTwoPointers ||
+    isBinarySearch ||
+    isLinkedList ||
+    isTree ||
+    isGraph ||
+    isHeap ||
+    isDP ||
+    isTrie ||
+    isOOP;
 
   return (
     <div className="h-full flex flex-col bg-slate-50 dark:bg-slate-950 animate-in fade-in overflow-hidden">
       {/* Header - Fixed at top */}
       <div className="bg-white/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 p-6 flex justify-between items-center z-20 backdrop-blur flex-none">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span
-              className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded ${
-                topic.phase === "DSA"
-                  ? "bg-cyan-100 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400"
-                  : topic.phase === "LLD"
-                  ? "bg-purple-100 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400"
-                  : topic.phase === "Behavioral"
-                  ? "bg-pink-100 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400"
-                  : "bg-orange-100 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400"
-              }`}
-            >
-              {topic.phase}
-            </span>
-            <span className="text-xs text-slate-500">• {topic.difficulty}</span>
+        <div className="flex items-center gap-4">
+          {/* Added Back Button */}
+          <button
+            onClick={onBack}
+            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-500 hover:text-slate-900 dark:hover:text-white"
+            title="Back to Board"
+          >
+            <ChevronLeft size={24} />
+          </button>
+
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span
+                className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded ${
+                  topic.phase === "DSA"
+                    ? "bg-cyan-100 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400"
+                    : topic.phase === "LLD"
+                    ? "bg-purple-100 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400"
+                    : topic.phase === "Behavioral"
+                    ? "bg-pink-100 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400"
+                    : "bg-orange-100 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400"
+                }`}
+              >
+                {topic.phase}
+              </span>
+              <span className="text-xs text-slate-500">
+                • {topic.difficulty}
+              </span>
+            </div>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              {topic.title}
+              {isCompleted && (
+                <CheckCircle2 className="text-green-500" size={20} />
+              )}
+            </h2>
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            {topic.title}
-            {isCompleted && (
-              <CheckCircle2 className="text-green-500" size={20} />
-            )}
-          </h2>
         </div>
+
         <button
           onClick={onToggleComplete}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${
@@ -124,30 +156,149 @@ export const TopicDetail: React.FC<TopicDetailProps> = ({
       {/* Content Area */}
       <div className="flex-1 overflow-y-auto lg:overflow-hidden lg:grid lg:grid-cols-3 pb-20 sm:pb-0">
         {/* LEFT COLUMN: EXPLANATION */}
-        <div className="lg:col-span-2 lg:h-full lg:overflow-y-auto p-4 sm:p-8 border-r border-slate-200 dark:border-slate-800 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-800">
+        <div
+          className={`lg:col-span-2 lg:h-full p-4 sm:p-8 border-r border-slate-200 dark:border-slate-800 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-800 ${
+            isInteractiveGuide
+              ? "lg:overflow-hidden flex flex-col"
+              : "lg:overflow-y-auto"
+          }`}
+        >
           {isArraysHashing ? (
             <ArraysHashingGuide
               initialPage={initialPage}
               onPageChange={onPageChange}
+              onComplete={() => {
+                // 1. Mark as complete if not already
+                if (!isCompleted) onToggleComplete();
+
+                // 2. Wait 1s for user to see the 100% progress bar, then return
+                setTimeout(() => {
+                  onBack();
+                }, 1000);
+              }}
             />
           ) : isSlidingWindow ? (
-            <SlidingWindowGuide />
+            <SlidingWindowGuide
+              initialPage={initialPage}
+              onPageChange={onPageChange}
+              onComplete={() => {
+                // 1. Mark as complete if not already
+                if (!isCompleted) onToggleComplete();
+
+                // 2. Wait 1s for user to see the 100% progress bar, then return
+                setTimeout(() => {
+                  onBack();
+                }, 1000);
+              }}
+            />
           ) : isTwoPointers ? (
-            <TwoPointersGuide />
+            <TwoPointersGuide
+              initialPage={initialPage}
+              onPageChange={onPageChange}
+              onComplete={() => {
+                // 1. Mark as complete if not already
+                if (!isCompleted) onToggleComplete();
+
+                // 2. Wait 1s for user to see the 100% progress bar, then return
+                setTimeout(() => {
+                  onBack();
+                }, 1000);
+              }}
+            />
           ) : isBinarySearch ? (
-            <BinarySearchGuide />
+            <BinarySearchGuide
+              initialPage={initialPage}
+              onPageChange={onPageChange}
+              onComplete={() => {
+                // 1. Mark as complete if not already
+                if (!isCompleted) onToggleComplete();
+
+                // 2. Wait 1s for user to see the 100% progress bar, then return
+                setTimeout(() => {
+                  onBack();
+                }, 1000);
+              }}
+            />
           ) : isLinkedList ? (
-            <LinkedListGuide />
+            <LinkedListGuide
+              initialPage={initialPage}
+              onPageChange={onPageChange}
+              onComplete={() => {
+                // 1. Mark as complete if not already
+                if (!isCompleted) onToggleComplete();
+
+                // 2. Wait 1s for user to see the 100% progress bar, then return
+                setTimeout(() => {
+                  onBack();
+                }, 1000);
+              }}
+            />
           ) : isTree ? (
-            <TreeGuide />
+            <TreeGuide
+              initialPage={initialPage}
+              onPageChange={onPageChange}
+              onComplete={() => {
+                if (!isCompleted) onToggleComplete();
+                setTimeout(() => {
+                  onBack();
+                }, 1000);
+              }}
+            />
           ) : isGraph ? (
-            <GraphGuide />
+            <GraphGuide
+              initialPage={initialPage}
+              onPageChange={onPageChange}
+              onComplete={() => {
+                if (!isCompleted) onToggleComplete();
+                setTimeout(() => {
+                  onBack();
+                }, 1000);
+              }}
+            />
           ) : isHeap ? (
-            <HeapGuide />
+            <HeapGuide
+              initialPage={initialPage}
+              onPageChange={onPageChange}
+              onComplete={() => {
+                if (!isCompleted) onToggleComplete();
+                setTimeout(() => {
+                  onBack();
+                }, 1000);
+              }}
+            />
           ) : isDP ? (
-            <DPGuide />
+            <DPGuide
+              initialPage={initialPage}
+              onPageChange={onPageChange}
+              onComplete={() => {
+                if (!isCompleted) onToggleComplete();
+                setTimeout(() => {
+                  onBack();
+                }, 1000);
+              }}
+            />
           ) : isTrie ? (
-            <TrieGuide />
+            <TrieGuide
+              initialPage={initialPage}
+              onPageChange={onPageChange}
+              onComplete={() => {
+                if (!isCompleted) onToggleComplete();
+                setTimeout(() => {
+                  onBack();
+                }, 1000);
+              }}
+            />
+          ) : isOOP ? (
+            <OOPGuide
+              initialPage={initialPage}
+              onPageChange={onPageChange}
+              onComplete={() => {
+                if (!isCompleted) onToggleComplete();
+                setTimeout(() => {
+                  onBack();
+                }, 1000);
+              }}
+            />
           ) : (
             <div className="prose prose-slate dark:prose-invert max-w-none">
               {renderVisual()}

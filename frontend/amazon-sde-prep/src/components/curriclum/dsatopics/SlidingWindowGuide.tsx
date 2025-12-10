@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ChevronLeft,
   ChevronRight,
   CheckCircle2,
-  //   Circle,
   ArrowRight,
-  //   ArrowDown,
   Battery,
   BatteryWarning,
   Zap,
@@ -16,31 +14,18 @@ interface PageContent {
   content: React.ReactNode;
 }
 
-export const SlidingWindowGuide: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [completedPages, setCompletedPages] = useState<boolean[]>(
-    new Array(4).fill(false)
-  );
+interface SlidingWindowGuideProps {
+  initialPage?: number;
+  onPageChange?: (page: number) => void;
+  onComplete?: () => void;
+}
 
-  const markComplete = (pageIndex: number) => {
-    const newCompleted = [...completedPages];
-    newCompleted[pageIndex] = true;
-    setCompletedPages(newCompleted);
-  };
-
-  const nextPage = () => {
-    markComplete(currentPage);
-    if (currentPage < pages.length - 1) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const prevPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
+export const SlidingWindowGuide: React.FC<SlidingWindowGuideProps> = ({
+  initialPage = 0,
+  onPageChange,
+  onComplete,
+}) => {
+  // Define pages first so we can use length for initialization
   const pages: PageContent[] = [
     {
       title: "The Concept – Fixed vs. Variable Window",
@@ -59,6 +44,65 @@ export const SlidingWindowGuide: React.FC = () => {
       content: <Page4Content />,
     },
   ];
+
+  // Calculate effective start page. If initialPage is the total length (completed), show the last page.
+  const effectivePage = Math.min(Math.max(0, initialPage), pages.length - 1);
+
+  const [currentPage, setCurrentPage] = useState(effectivePage);
+
+  // Initialize completed pages based on initialPage
+  const [completedPages, setCompletedPages] = useState<boolean[]>(() => {
+    const initial = new Array(pages.length).fill(false);
+    // If we are starting at page X, assume 0 to X-1 are complete.
+    // If initialPage is pages.length (fully complete), mark all as true.
+    const limit = initialPage >= pages.length ? pages.length : initialPage;
+    for (let i = 0; i < limit; i++) {
+      initial[i] = true;
+    }
+    return initial;
+  });
+
+  // Sync internal state if initialPage changes (e.g. from parent reload)
+  useEffect(() => {
+    const newPage = Math.min(Math.max(0, initialPage), pages.length - 1);
+    setCurrentPage(newPage);
+
+    setCompletedPages((prev) => {
+      const next = [...prev];
+      const limit = initialPage >= pages.length ? pages.length : initialPage;
+      for (let i = 0; i < limit; i++) {
+        next[i] = true;
+      }
+      return next;
+    });
+  }, [initialPage, pages.length]);
+
+  const markComplete = (pageIndex: number) => {
+    const newCompleted = [...completedPages];
+    newCompleted[pageIndex] = true;
+    setCompletedPages(newCompleted);
+  };
+
+  const nextPage = () => {
+    markComplete(currentPage);
+    if (currentPage < pages.length - 1) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      onPageChange?.(newPage);
+    } else {
+      // On the last page, clicking "Finish"
+      onPageChange?.(pages.length); // Send length to indicate full completion
+      onComplete?.();
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      onPageChange?.(newPage);
+    }
+  };
 
   const progress = Math.round(
     (completedPages.filter(Boolean).length / pages.length) * 100
@@ -126,7 +170,9 @@ export const SlidingWindowGuide: React.FC = () => {
         <button
           onClick={nextPage}
           disabled={
-            currentPage === pages.length - 1 && completedPages[currentPage]
+            currentPage === pages.length - 1 &&
+            completedPages[currentPage] &&
+            initialPage < pages.length
           }
           className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-colors ${
             currentPage === pages.length - 1

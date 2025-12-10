@@ -1,17 +1,5 @@
-import React, { useState } from "react";
-import {
-  ArrowRight,
-  ArrowLeft,
-  Copy,
-  Check,
-  Brain,
-  // Calculator,
-  // Home,
-  // Grid,
-  // Table,
-  // ArrowDown,
-  // CornerDownRight,
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { ArrowRight, ArrowLeft, Copy, Check, Brain } from "lucide-react";
 
 const CodeBlock = ({ code }: { code: string }) => {
   const [copied, setCopied] = useState(false);
@@ -45,24 +33,6 @@ const CodeBlock = ({ code }: { code: string }) => {
 // Page 1: Concept - Memoization vs Tabulation
 const ConceptPage = () => {
   const [step, setStep] = useState(0);
-
-  // Tree Structure for Fib(3)
-  // Root: 3
-  // L: 2, R: 1
-  // L->L: 1, L->R: 0
-  // Steps:
-  // 0: Start Fib(3).
-  // 1: Go Left Fib(2).
-  // 2: Go Left Fib(1). Base Case. Return 1. (Green)
-  // 3: Go Right Fib(0). Base Case. Return 0. (Green)
-  // 4: Calc Fib(2) = 1+0 = 1. Store in Cache. (Green)
-  // 5: Go Right Fib(1). Check Cache? No, usually simple base case, but let's pretend we cache everything.
-  //    Actually, let's show Fib(4) structure simplified or just Fib(3) with cache hit on Fib(1) if it was complex.
-  //    Let's stick to the prompt's "Left branch calculates... Right branch asks... Cache Hit".
-  //    Let's use Fib(3) where Fib(1) is called twice?
-  //    Fib(3) -> Fib(2), Fib(1).
-  //    Fib(2) -> Fib(1), Fib(0).
-  //    So Fib(1) is the repeated subproblem.
 
   const steps = [
     { msg: "Calculate Fib(3). Break into Fib(2) + Fib(1).", active: "root" },
@@ -241,14 +211,6 @@ const ConceptPage = () => {
 const HouseRobberPage = () => {
   const [step, setStep] = useState(0);
 
-  // Houses: [1, 2, 3, 1]
-  // Steps:
-  // 0: Init. rob1=0, rob2=0.
-  // 1: House 0 ($1). Max(1+0, 0) = 1. rob1=0, rob2=1.
-  // 2: House 1 ($2). Max(2+0, 1) = 2. rob1=1, rob2=2.
-  // 3: House 2 ($3). Max(3+1, 2) = 4. rob1=2, rob2=4.
-  // 4: House 3 ($1). Max(1+2, 4) = 4. rob1=4, rob2=4.
-
   const houses = [1, 2, 3, 1];
   const steps = [
     {
@@ -410,14 +372,6 @@ const HouseRobberPage = () => {
 // Page 3: Unique Paths
 const UniquePathsPage = () => {
   const [step, setStep] = useState(0);
-
-  // Grid 3x3
-  // Steps:
-  // 0: Init. Top row/Left col = 1.
-  // 1: Fill (1,1). 1+1=2.
-  // 2: Fill (1,2). 1+2=3.
-  // 3: Fill (2,1). 2+1=3.
-  // 4: Fill (2,2). 3+3=6.
 
   const steps = [
     {
@@ -594,15 +548,6 @@ const UniquePathsPage = () => {
 const LCSPage = () => {
   const [step, setStep] = useState(0);
 
-  // Str1: "abc", Str2: "ac"
-  // Grid 4x3 (rows 0-3, cols 0-2)
-  // 0: Init.
-  // 1: 'a' vs 'a'. Match. 1 + diag(0) = 1.
-  // 2: 'b' vs 'a'. No. Max(Top, Left) = 1.
-  // 3: 'c' vs 'a'. No. Max(Top, Left) = 1.
-  // 4: 'a' vs 'c'. No. Max...
-  // Let's just show the diagonal match logic for 'a'=='a' and 'c'=='c'.
-
   // Simplified steps for visual clarity
   const steps = [
     {
@@ -770,27 +715,75 @@ const LCSPage = () => {
   );
 };
 
-const DPGuide = () => {
-  const [page, setPage] = useState(1);
+interface DPGuideProps {
+  initialPage?: number;
+  onPageChange?: (page: number) => void;
+  onComplete?: () => void;
+}
 
-  const nextPage = () => setPage((p) => Math.min(4, p + 1));
-  const prevPage = () => setPage((p) => Math.max(1, p - 1));
+const DPGuide = ({
+  initialPage = 1,
+  onPageChange,
+  onComplete,
+}: DPGuideProps) => {
+  const [page, setPage] = useState(initialPage);
+  const totalPages = 4;
+  const [completedPages, setCompletedPages] = useState<boolean[]>(
+    new Array(totalPages).fill(false)
+  );
+
+  useEffect(() => {
+    if (initialPage) {
+      setPage(initialPage);
+    }
+  }, [initialPage]);
+
+  const markComplete = (pageIndex: number) => {
+    const newCompleted = [...completedPages];
+    newCompleted[pageIndex] = true;
+    setCompletedPages(newCompleted);
+  };
+
+  const nextPage = () => {
+    markComplete(page - 1);
+    if (page < totalPages) {
+      const newPage = page + 1;
+      setPage(newPage);
+      onPageChange?.(newPage);
+    } else {
+      onComplete?.();
+    }
+  };
+
+  const prevPage = () => {
+    if (page > 1) {
+      const newPage = page - 1;
+      setPage(newPage);
+      onPageChange?.(newPage);
+    }
+  };
 
   return (
     <div className="space-y-6">
       {/* Progress Bar */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex gap-1">
-          {[1, 2, 3, 4].map((i) => (
+          {Array.from({ length: totalPages }).map((_, i) => (
             <div
               key={i}
               className={`h-2 w-8 rounded-full transition-colors ${
-                i <= page ? "bg-purple-500" : "bg-slate-700"
+                i + 1 === page
+                  ? "bg-purple-500"
+                  : completedPages[i]
+                  ? "bg-green-500"
+                  : "bg-slate-700"
               }`}
             />
           ))}
         </div>
-        <span className="text-sm text-slate-400">Page {page} of 4</span>
+        <span className="text-sm text-slate-400">
+          Page {page} of {totalPages}
+        </span>
       </div>
 
       {/* Content Area */}
@@ -812,10 +805,10 @@ const DPGuide = () => {
         </button>
         <button
           onClick={nextPage}
-          disabled={page === 4}
           className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors"
         >
-          Next <ArrowRight className="w-4 h-4" />
+          {page === totalPages ? "Complete" : "Next"}{" "}
+          <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </div>

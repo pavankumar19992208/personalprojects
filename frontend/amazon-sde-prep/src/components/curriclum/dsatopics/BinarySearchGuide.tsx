@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ArrowRight,
   ArrowLeft,
@@ -12,25 +12,97 @@ import {
   Split,
 } from "lucide-react";
 
-const BinarySearchGuide = () => {
-  const [page, setPage] = useState(1);
+interface BinarySearchGuideProps {
+  initialPage?: number;
+  onPageChange?: (page: number) => void;
+  onComplete?: () => void;
+}
 
-  const nextPage = () => setPage((p) => Math.min(4, p + 1));
-  const prevPage = () => setPage((p) => Math.max(1, p - 1));
+const BinarySearchGuide: React.FC<BinarySearchGuideProps> = ({
+  initialPage = 0,
+  onPageChange,
+  onComplete,
+}) => {
+  const totalPages = 4;
+  // Convert 0-based initialPage to 1-based current page
+  // If initialPage is >= totalPages (completed), show the last page
+  const effectivePage = Math.min(Math.max(1, initialPage + 1), totalPages);
+
+  const [page, setPage] = useState(effectivePage);
+
+  // Track completed pages (0-based index)
+  const [completedPages, setCompletedPages] = useState<boolean[]>(() => {
+    const initial = new Array(totalPages).fill(false);
+    const limit = initialPage >= totalPages ? totalPages : initialPage;
+    for (let i = 0; i < limit; i++) {
+      initial[i] = true;
+    }
+    return initial;
+  });
+
+  // Sync with parent prop changes
+  useEffect(() => {
+    const newPage = Math.min(Math.max(1, initialPage + 1), totalPages);
+    setPage(newPage);
+
+    setCompletedPages((prev) => {
+      const next = [...prev];
+      const limit = initialPage >= totalPages ? totalPages : initialPage;
+      for (let i = 0; i < limit; i++) {
+        next[i] = true;
+      }
+      return next;
+    });
+  }, [initialPage]);
+
+  const markComplete = (pageIndex: number) => {
+    const newCompleted = [...completedPages];
+    newCompleted[pageIndex] = true;
+    setCompletedPages(newCompleted);
+  };
+
+  const nextPage = () => {
+    // Mark current page (0-based) as complete before moving
+    markComplete(page - 1);
+
+    if (page < totalPages) {
+      const newPage = page + 1;
+      setPage(newPage);
+      onPageChange?.(newPage - 1); // Send 0-based index
+    } else {
+      // On last page, finish
+      onPageChange?.(totalPages); // Send total length to indicate completion
+      onComplete?.();
+    }
+  };
+
+  const prevPage = () => {
+    if (page > 1) {
+      const newPage = page - 1;
+      setPage(newPage);
+      onPageChange?.(newPage - 1);
+    }
+  };
 
   return (
     <div className="space-y-6">
       {/* Progress Bar */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex gap-1">
-          {[1, 2, 3, 4].map((i) => (
-            <div
-              key={i}
-              className={`h-2 w-8 rounded-full transition-colors ${
-                i <= page ? "bg-blue-500" : "bg-slate-700"
-              }`}
-            />
-          ))}
+          {[1, 2, 3, 4].map((i) => {
+            const isCurrent = i === page;
+            const isCompleted = completedPages[i - 1];
+            let color = "bg-slate-700";
+            if (isCurrent) color = "bg-blue-500";
+            else if (isCompleted) color = "bg-green-500";
+
+            return (
+              <div
+                key={i}
+                className={`h-2 w-8 rounded-full transition-colors ${color}`}
+              />
+            );
+          })}
         </div>
         <span className="text-sm text-slate-400">Page {page} of 4</span>
       </div>
@@ -48,16 +120,25 @@ const BinarySearchGuide = () => {
         <button
           onClick={prevPage}
           disabled={page === 1}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-slate-300"
         >
           <ArrowLeft className="w-4 h-4" /> Previous
         </button>
         <button
           onClick={nextPage}
-          disabled={page === 4}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+          disabled={page === 4 && completedPages[3] && initialPage < totalPages}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+            page === 4
+              ? "bg-green-600 hover:bg-green-500 text-white"
+              : "bg-blue-600 hover:bg-blue-700 text-white"
+          }`}
         >
-          Next <ArrowRight className="w-4 h-4" />
+          {page === 4 ? "Finish Module" : "Next"}
+          {page === 4 ? (
+            <CheckCircle2 className="w-4 h-4" />
+          ) : (
+            <ArrowRight className="w-4 h-4" />
+          )}
         </button>
       </div>
     </div>

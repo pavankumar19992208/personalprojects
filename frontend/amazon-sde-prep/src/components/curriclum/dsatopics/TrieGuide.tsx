@@ -1,15 +1,5 @@
-import React, { useState } from "react";
-import {
-  ArrowRight,
-  ArrowLeft,
-  Copy,
-  Check,
-  Search,
-  //   Network,
-  //   GitMerge,
-  Zap,
-  //   Type,
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { ArrowRight, ArrowLeft, Copy, Check, Search, Zap } from "lucide-react";
 
 const CodeBlock = ({ code }: { code: string }) => {
   const [copied, setCopied] = useState(false);
@@ -899,27 +889,77 @@ const OptimizationPage = () => {
   );
 };
 
-const TrieGuide = () => {
-  const [page, setPage] = useState(1);
+interface TrieGuideProps {
+  initialPage?: number;
+  onPageChange?: (page: number) => void;
+  onComplete?: () => void;
+}
 
-  const nextPage = () => setPage((p) => Math.min(5, p + 1));
-  const prevPage = () => setPage((p) => Math.max(1, p - 1));
+const TrieGuide = ({
+  initialPage = 1,
+  onPageChange,
+  onComplete,
+}: TrieGuideProps) => {
+  const [page, setPage] = useState(initialPage);
+  const totalPages = 5;
+  const [completedPages, setCompletedPages] = useState<boolean[]>(
+    new Array(totalPages).fill(false)
+  );
+
+  useEffect(() => {
+    if (initialPage) {
+      setPage(initialPage);
+    }
+  }, [initialPage]);
+
+  const markComplete = (pageIndex: number) => {
+    setCompletedPages((prev) => {
+      const newCompleted = [...prev];
+      newCompleted[pageIndex] = true;
+      return newCompleted;
+    });
+  };
+
+  const nextPage = () => {
+    markComplete(page - 1);
+    if (page < totalPages) {
+      const newPage = page + 1;
+      setPage(newPage);
+      onPageChange?.(newPage);
+    } else {
+      onComplete?.();
+    }
+  };
+
+  const prevPage = () => {
+    if (page > 1) {
+      const newPage = page - 1;
+      setPage(newPage);
+      onPageChange?.(newPage);
+    }
+  };
 
   return (
     <div className="space-y-6">
       {/* Progress Bar */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex gap-1">
-          {[1, 2, 3, 4, 5].map((i) => (
+          {Array.from({ length: totalPages }).map((_, i) => (
             <div
               key={i}
               className={`h-2 w-8 rounded-full transition-colors ${
-                i <= page ? "bg-purple-500" : "bg-slate-700"
+                i + 1 === page
+                  ? "bg-purple-500"
+                  : completedPages[i]
+                  ? "bg-green-500"
+                  : "bg-slate-700"
               }`}
             />
           ))}
         </div>
-        <span className="text-sm text-slate-400">Page {page} of 5</span>
+        <span className="text-sm text-slate-400">
+          Page {page} of {totalPages}
+        </span>
       </div>
 
       {/* Content Area */}
@@ -942,10 +982,16 @@ const TrieGuide = () => {
         </button>
         <button
           onClick={nextPage}
-          disabled={page === 5}
           className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors"
         >
-          Next <ArrowRight className="w-4 h-4" />
+          {page === totalPages ? "Complete Module" : "Next"}{" "}
+          <ArrowRight
+            className="w-4 h-
+Analyzing Implementation Patterns
+Here is the fully updated TrieGuide.tsx with the progress tracking integration.
+
+4"
+          />
         </button>
       </div>
     </div>

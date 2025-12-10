@@ -1,23 +1,55 @@
 import { useState, useEffect } from "react";
-import {
-  ArrowRight,
-  ArrowLeft,
-  Network,
-  Copy,
-  Check,
-  //   GitBranch,
-  //   Layers,
-  //   Search,
-  //   Database,
-  //   ArrowDown,
-  //   ArrowUp,
-} from "lucide-react";
+import { ArrowRight, ArrowLeft, Network, Copy, Check } from "lucide-react";
 
-const TreeGuide = () => {
-  const [page, setPage] = useState(1);
+interface TreeGuideProps {
+  initialPage?: number;
+  onPageChange?: (page: number) => void;
+  onComplete?: () => void;
+}
 
-  const nextPage = () => setPage((p) => Math.min(5, p + 1));
-  const prevPage = () => setPage((p) => Math.max(1, p - 1));
+const TreeGuide = ({
+  initialPage = 1,
+  onPageChange,
+  onComplete,
+}: TreeGuideProps) => {
+  const [page, setPage] = useState(initialPage);
+  const [completedPages, setCompletedPages] = useState<boolean[]>(
+    new Array(5).fill(false)
+  );
+  const totalPages = 5;
+
+  useEffect(() => {
+    if (initialPage) {
+      setPage(initialPage);
+    }
+  }, [initialPage]);
+
+  const markComplete = (pageIndex: number) => {
+    setCompletedPages((prev) => {
+      const newCompleted = [...prev];
+      newCompleted[pageIndex] = true;
+      return newCompleted;
+    });
+  };
+
+  const nextPage = () => {
+    markComplete(page - 1);
+    if (page < totalPages) {
+      const newPage = page + 1;
+      setPage(newPage);
+      onPageChange?.(newPage);
+    } else {
+      onComplete?.();
+    }
+  };
+
+  const prevPage = () => {
+    if (page > 1) {
+      const newPage = page - 1;
+      setPage(newPage);
+      onPageChange?.(newPage);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -28,12 +60,18 @@ const TreeGuide = () => {
             <div
               key={i}
               className={`h-2 w-8 rounded-full transition-colors ${
-                i <= page ? "bg-blue-500" : "bg-slate-700"
+                i < page || completedPages[i - 1]
+                  ? "bg-green-500"
+                  : i === page
+                  ? "bg-blue-500"
+                  : "bg-slate-700"
               }`}
             />
           ))}
         </div>
-        <span className="text-sm text-slate-400">Page {page} of 5</span>
+        <span className="text-sm text-slate-400">
+          Page {page} of {totalPages}
+        </span>
       </div>
 
       {/* Content Area */}
@@ -56,10 +94,10 @@ const TreeGuide = () => {
         </button>
         <button
           onClick={nextPage}
-          disabled={page === 5}
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
         >
-          Next <ArrowRight className="w-4 h-4" />
+          {page === totalPages ? "Complete Module" : "Next"}{" "}
+          <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </div>
@@ -919,7 +957,6 @@ const SerializationPage = () => {
                 for empty children to preserve structure.
               </p>
             </div>
-
             <CodeBlock
               code={`def serialize(root):
     res = []
@@ -932,7 +969,7 @@ const SerializationPage = () => {
         dfs(node.right)
     dfs(root)
     return ",".join(res)`}
-            />
+            />{" "}
           </div>
         </div>
       </div>

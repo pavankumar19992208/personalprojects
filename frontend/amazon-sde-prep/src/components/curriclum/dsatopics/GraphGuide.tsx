@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowRight,
   ArrowLeft,
@@ -11,11 +11,55 @@ import {
   //   RefreshCw,
 } from "lucide-react";
 
-const GraphGuide = () => {
-  const [page, setPage] = useState(1);
+interface GraphGuideProps {
+  initialPage?: number;
+  onPageChange?: (page: number) => void;
+  onComplete?: () => void;
+}
 
-  const nextPage = () => setPage((p) => Math.min(4, p + 1));
-  const prevPage = () => setPage((p) => Math.max(1, p - 1));
+const GraphGuide = ({
+  initialPage = 1,
+  onPageChange,
+  onComplete,
+}: GraphGuideProps) => {
+  const [page, setPage] = useState(initialPage);
+  const [completedPages, setCompletedPages] = useState<boolean[]>(
+    new Array(4).fill(false)
+  );
+  const totalPages = 4;
+
+  useEffect(() => {
+    if (initialPage) {
+      setPage(initialPage);
+    }
+  }, [initialPage]);
+
+  const markComplete = (pageIndex: number) => {
+    setCompletedPages((prev) => {
+      const newCompleted = [...prev];
+      newCompleted[pageIndex] = true;
+      return newCompleted;
+    });
+  };
+
+  const nextPage = () => {
+    markComplete(page - 1);
+    if (page < totalPages) {
+      const newPage = page + 1;
+      setPage(newPage);
+      onPageChange?.(newPage);
+    } else {
+      onComplete?.();
+    }
+  };
+
+  const prevPage = () => {
+    if (page > 1) {
+      const newPage = page - 1;
+      setPage(newPage);
+      onPageChange?.(newPage);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -26,12 +70,18 @@ const GraphGuide = () => {
             <div
               key={i}
               className={`h-2 w-8 rounded-full transition-colors ${
-                i <= page ? "bg-purple-500" : "bg-slate-700"
+                i < page || completedPages[i - 1]
+                  ? "bg-green-500"
+                  : i === page
+                  ? "bg-purple-500"
+                  : "bg-slate-700"
               }`}
             />
           ))}
         </div>
-        <span className="text-sm text-slate-400">Page {page} of 4</span>
+        <span className="text-sm text-slate-400">
+          Page {page} of {totalPages}
+        </span>
       </div>
 
       {/* Content Area */}
@@ -53,10 +103,10 @@ const GraphGuide = () => {
         </button>
         <button
           onClick={nextPage}
-          disabled={page === 4}
           className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors"
         >
-          Next <ArrowRight className="w-4 h-4" />
+          {page === totalPages ? "Complete Module" : "Next"}{" "}
+          <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </div>

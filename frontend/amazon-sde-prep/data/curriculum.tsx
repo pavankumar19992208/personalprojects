@@ -430,88 +430,227 @@ Efficiently tracking connected components in a graph (e.g., "Friend Circles" / "
   "phase-2": {
     id: "phase-2",
     title: "Phase 2: Low-Level Design (LLD)",
-    desc: "Days 15-18 & 20. The 'Hidden' Round. Pure OOP & Design Patterns.",
+    desc: "Days 15-20. The 'Silent Killer'. Pure OOP & Design Patterns.",
     topics: [
       {
-        id: "lld-fundamentals",
-        title: "Design Fundamentals (Day 15)",
+        id: "lld-oop",
+        title: "OOP Essentials (The Pillars)",
         phase: "LLD",
         difficulty: "Core",
-        priority: "High",
+        priority: "Mandatory",
         frequency: "High",
-        visualType: "none",
-        desc: "Scalability, CAP Theorem, Load Balancers.",
+        visualType: "oop-pillars",
+        desc: "Encapsulation, Abstraction, Inheritance, Polymorphism.",
         explanation: `
-### [cite_start]Concepts [cite: 147, 149, 173]
-* **Horizontal vs Vertical Scaling:** Buying bigger machines vs buying more machines.
-* **Load Balancers:** Round Robin vs Least Connections.
-* **CAP Theorem:** Consistency vs Availability vs Partition Tolerance.
-* **Caching:** LRU Policy, Write-through vs Write-back.
+  ### The 4 Pillars of OOP
+  1. **Encapsulation:** Hiding data (private variables) and exposing only what's necessary (getters/setters). *Metaphor: A Capsule.*
+  2. **Abstraction:** Hiding complexity. You drive a car using a steering wheel, not by controlling individual fuel injectors. *Metaphor: A Remote Control.*
+  3. **Inheritance:** Don't repeat yourself (DRY). A 'Dog' inherits common traits from 'Animal'. *Metaphor: Family DNA.*
+  4. **Polymorphism:** One interface, many forms. A 'Shape' class has a \`draw()\` method, but 'Circle' and 'Square' implement it differently. *Metaphor: A Universal Plug.*
+  
+  ### Amazon Interview Context
+  They rarely ask "Define Polymorphism." Instead, they ask:
+  * "Should you use an Abstract Class or an Interface here?"
+  * "Why is multiple inheritance dangerous?" (Diamond Problem).
         `,
-        prompt: "Explain CAP Theorem...",
-        problems: [],
-      },
-      {
-        id: "lld-solid",
-        title: "SOLID & Patterns",
-        phase: "LLD",
-        difficulty: "Core",
-        priority: "Critical",
-        frequency: "Mandatory",
-        visualType: "none",
-        desc: "The Grammar of Good Code. SRP, OCP, LSP, ISP, DIP.",
-        explanation: `### S.O.L.I.D\n* **S:** Single Responsibility.\n* **O:** Open/Closed.\n* **L:** Liskov Substitution.\n* **I:** Interface Segregation.\n* **D:** Dependency Inversion.`,
-        prompt: "Explain SOLID principles...",
+        prompt: "Explain Runtime vs Compile-time Polymorphism...",
+        codeSnippet: `
+  # Python Polymorphism Example
+  class Payment:
+      def pay(self): raise NotImplementedError
+  
+  class CreditCard(Payment):
+      def pay(self): print("Paying with Card")
+  
+  class PayPal(Payment):
+      def pay(self): print("Paying with PayPal")
+  
+  # Usage (The code doesn't care which one it is)
+  def process_payment(payment_method):
+      payment_method.pay()
+  `,
         problems: [],
         subTopics: [
           {
-            id: "solid-srp",
-            title: "Single Responsibility Principle",
+            id: "oop-1",
+            title: "Abstract Class vs Interface",
             difficulty: "Core",
             priority: "Critical",
-            desc: "A class should have one, and only one, reason to change.",
+            desc: "When to use which? (Is-A vs Has-A relationships).",
           },
           {
-            id: "solid-ocp",
-            title: "Open/Closed Principle",
-            difficulty: "Core",
-            priority: "Critical",
-            desc: "Open for extension, closed for modification.",
-          },
-          {
-            id: "pat-singleton",
-            title: "Singleton Pattern",
-            difficulty: "Core",
+            id: "oop-2",
+            title: "The Diamond Problem",
+            difficulty: "Medium",
             priority: "High",
-            desc: "Ensure a class has only one instance.",
-          },
-          {
-            id: "pat-factory",
-            title: "Factory Pattern",
-            difficulty: "Core",
-            priority: "High",
-            desc: "Create objects without specifying the exact class.",
-          },
-          {
-            id: "pat-strategy",
-            title: "Strategy Pattern",
-            difficulty: "Core",
-            priority: "High",
-            desc: "Define a family of algorithms.",
+            desc: "Why Multiple Inheritance breaks things.",
           },
         ],
       },
       {
-        id: "lld-parking",
-        title: "Design a Parking Lot",
+        id: "lld-fundamentals",
+        title: "Design Fundamentals",
+        phase: "LLD",
+        difficulty: "Core",
+        priority: "High",
+        frequency: "High",
+        visualType: "scale-balance",
+        desc: "Scalability, CAP Theorem, Load Balancers.",
+        explanation: `
+  ### Key Concepts
+  * **Horizontal vs Vertical Scaling:** Buying more machines (Horizontal) vs buying a bigger machine (Vertical).
+  * **Load Balancers:** The traffic cop distributing user requests to servers (Round Robin, Least Connections).
+  * **CAP Theorem:** In a distributed system, you can only pick two: **C**onsistency, **A**vailability, **P**artition Tolerance. (Amazon usually picks AP or CP, never CA).
+        `,
+        prompt: "Explain CAP Theorem in the context of Amazon Payments...",
+        problems: [],
+      },
+      {
+        id: "lld-solid",
+        title: "The Grammar: SOLID Principles",
+        phase: "LLD",
+        difficulty: "Core",
+        priority: "Mandatory",
+        frequency: "Every Interview",
+        visualType: "pillars",
+        desc: "The 5 rules of clean code (SRP, OCP, LSP, ISP, DIP).",
+        explanation: `
+  ### The Concept
+  Writing code that doesn't break when you touch it.
+  * **S (SRP):** One class, one job. (Don't make a 'God Class').
+  * **O (OCP):** Open for extension, closed for modification. (Add new features without rewriting old code).
+  * **L (LSP):** Subclasses must behave like their parents. (A 'RubberDuck' shouldn't inherit 'Fly()' from 'Duck').
+  * **I (ISP):** Small, specific interfaces are better than one big one.
+  * **D (DIP):** Depend on abstractions, not concrete classes.
+        `,
+        prompt: "Refactor this code to follow SRP...",
+        problems: [],
+      },
+      {
+        id: "lld-creational",
+        title: "Creational Patterns",
+        phase: "LLD",
+        difficulty: "Easy",
+        priority: "High",
+        frequency: "High",
+        visualType: "factory-belt",
+        desc: "Singleton, Factory, Builder.",
+        explanation: `
+  ### 1. Singleton (The President)
+  * **Metaphor:** The White House. There is only one, and everyone knows where it is.
+  * **Use Case:** Database Connections, Loggers, Config Managers.
+  
+  ### 2. Factory (The Pizza Store)
+  * **Metaphor:** Ordering "Pepperoni". You don't need to know how to make the dough.
+  * **Use Case:** Decoupling object creation logic from business logic.
+  
+  ### 3. Builder (The Subway Sandwich)
+  * **Metaphor:** "Start with bread. Add cheese. Add toasted."
+  * **Use Case:** Constructing complex objects with many optional steps.
+        `,
+        codeSnippet: `
+  # Python Singleton
+  class Logger:
+      _instance = None
+      def __new__(cls):
+          if cls._instance is None:
+              cls._instance = super(Logger, cls).__new__(cls)
+          return cls._instance
+  
+  # Python Factory
+  class AnimalFactory:
+      def get_animal(self, type):
+          if type == "dog": return Dog()
+          if type == "cat": return Cat()
+  `,
+        prompt: "Implement a thread-safe Singleton...",
+        problems: [],
+      },
+      {
+        id: "lld-structural",
+        title: "Structural Patterns",
+        phase: "LLD",
+        difficulty: "Medium",
+        priority: "Medium",
+        frequency: "Medium",
+        visualType: "adapter-plug",
+        desc: "Adapter, Decorator.",
+        explanation: `
+  ### 1. Adapter (The Travel Plug)
+  * **Metaphor:** Plugging a US laptop into a UK socket.
+  * **Use Case:** Making two incompatible interfaces work together (e.g., Old XML System <-> New JSON System).
+  
+  ### 2. Decorator (The Matryoshka Doll)
+  * **Metaphor:** Putting on a jacket. You are still "You", but now you have "Warmth".
+  * **Use Case:** Adding features dynamically without inheritance (e.g., Wrapping a basic Input Stream with Buffering).
+        `,
+        codeSnippet: `
+  # Python Decorator (Wrapper)
+  class Coffee:
+      def cost(self): return 5
+  
+  class MilkDecorator:
+      def __init__(self, coffee):
+          self.coffee = coffee
+      def cost(self):
+          return self.coffee.cost() + 2
+  `,
+        prompt: "Design a Coffee machine using Decorators...",
+        problems: [],
+      },
+      {
+        id: "lld-behavioral",
+        title: "Behavioral Patterns",
+        phase: "LLD",
+        difficulty: "Hard",
+        priority: "Critical",
+        frequency: "Very High",
+        visualType: "observer-signal",
+        desc: "Strategy, Observer.",
+        explanation: `
+  ### 1. Strategy (The GPS Route)
+  * **Metaphor:** "Avoid Highways" vs "Fastest Route". Same destination, different path.
+  * **Use Case:** Swapping algorithms at runtime (e.g., PaymentMethod: CreditCard vs PayPal).
+  
+  ### 2. Observer (The YouTube Sub)
+  * **Metaphor:** The Bell Icon. When a creator uploads, all subscribers get notified.
+  * **Use Case:** Event Listeners, Chat Rooms, Stock Tickers.
+        `,
+        codeSnippet: `
+  # Python Strategy
+  class PaymentContext:
+      def __init__(self, strategy):
+          self.strategy = strategy
+      def pay(self, amount):
+          self.strategy.execute(amount)
+  
+  # Usage
+  ctx = PaymentContext(CreditCardStrategy())
+  ctx.pay(100)
+  `,
+        prompt: "Design a Stock Notification system...",
+        problems: [],
+      },
+      {
+        id: "lld-parking-lot",
+        title: "Capstone: Design a Parking Lot",
         phase: "LLD",
         difficulty: "Design",
         priority: "Critical",
-        frequency: "Very Common",
-        visualType: "lld-parking",
-        desc: "Singleton (Manager), Factory (Ticket), Strategy (Pricing).",
-        explanation: `### Key Objects\nParkingLot, Level, Spot, Vehicle, Ticket.\n### Challenges\nConcurrency, Scalability.`,
-        prompt: "Design a Parking Lot...",
+        frequency: "The Final Boss",
+        visualType: "parking-grid",
+        desc: "Combining Singleton, Factory, and Strategy.",
+        explanation: `
+  ### The System
+  1. **Singleton:** The \`ParkingLotManager\` (Central Control).
+  2. **Factory:** \`TicketFactory\` generates tickets based on vehicle type.
+  3. **Strategy:** \`PricingStrategy\` (Hourly vs Flat Rate).
+  
+  ### The Challenge
+  * **Concurrency:** What if two cars try to book Spot #5 at the exact same millisecond?
+  * **Solution:** Mutex Locks or Database Transactions.
+        `,
+        prompt: "Handle the concurrency edge case...",
         problems: [],
         subTopics: [
           {
@@ -526,7 +665,7 @@ Efficiently tracking connected components in a graph (e.g., "Friend Circles" / "
             title: "Concurrency",
             difficulty: "Hard",
             priority: "Critical",
-            desc: "Handling two cars taking the same spot.",
+            desc: "Handling race conditions.",
           },
           {
             id: "pl-3",
@@ -547,11 +686,11 @@ Efficiently tracking connected components in a graph (e.g., "Friend Circles" / "
         visualType: "none",
         desc: "Bookstore, Rate Limiter, Notification System.",
         explanation: `
-### High Frequency Questions
-1. **Design Amazon Fresh Bookstore Search:** Indexing and filtering.
-2. **Design Rate Limiter:** Token Bucket or Leaky Bucket algorithms.
-3. **Design Notification System:** Observer pattern (Push/Email/SMS).
-4. **Design URL Shortener (TinyURL):** Hashing and DB schema.
+  ### High Frequency Questions
+  1. **Design Amazon Fresh Bookstore Search:** Indexing and filtering.
+  2. **Design Rate Limiter:** Token Bucket or Leaky Bucket algorithms.
+  3. **Design Notification System:** Observer pattern (Push/Email/SMS).
+  4. **Design URL Shortener (TinyURL):** Hashing and DB schema.
         `,
         prompt: "Design a Rate Limiter...",
         problems: [],

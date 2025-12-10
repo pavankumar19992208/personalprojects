@@ -156,9 +156,15 @@ function AppContent() {
         />
 
         {selectedTopic ? (
-          selectedTopic.subTopics && selectedTopic.subTopics.length > 0 ? (
+          selectedTopic.phase !== "DSA" ? (
             <SubjectDetail
               topic={selectedTopic}
+              isCompleted={!!progress[selectedTopic.id]}
+              onToggleComplete={() => handleToggleComplete(selectedTopic.id)}
+              initialPage={bookmarks[selectedTopic.id] || 0}
+              onPageChange={(page) => {
+                handleBookmarkUpdate(selectedTopic.id, page);
+              }}
               onBack={() => setSelectedTopic(null)}
             />
           ) : (
@@ -169,7 +175,8 @@ function AppContent() {
               initialPage={bookmarks[selectedTopic.id] || 0} // <--- Pass initial page
               onPageChange={(page) =>
                 handleBookmarkUpdate(selectedTopic.id, page)
-              } // <--- Pass handler
+              }
+              onBack={() => setSelectedTopic(null)} // <--- Pass handler
             />
           )
         ) : (
