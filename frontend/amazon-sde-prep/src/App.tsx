@@ -132,7 +132,7 @@ function AppContent() {
   const percentage = Math.round((completedCount / totalTopics) * 100);
 
   return (
-    <div className="h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-200 font-sans flex overflow-hidden transition-colors duration-300">
+    <div className="h-[100dvh] bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-200 font-sans flex overflow-hidden transition-colors duration-300">
       <Sidebar
         user={user}
         activeView={activeView}

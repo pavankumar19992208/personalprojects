@@ -17,8 +17,8 @@ import {
 // --- Visual Components ---
 
 const PillarsVisual = () => (
-  <div className="bg-slate-100 dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-800 my-6">
-    <div className="flex justify-center items-end gap-4 h-48">
+  <div className="w-full max-w-lg bg-slate-100 dark:bg-slate-900 p-4 sm:p-8 rounded-xl border border-slate-200 dark:border-slate-800">
+    <div className="flex justify-center items-end gap-2 sm:gap-4 h-32 sm:h-48">
       {[
         {
           name: "Encapsulation",
@@ -49,31 +49,21 @@ const PillarsVisual = () => (
           key={idx}
           className="group relative flex flex-col items-center h-full justify-end w-1/4"
         >
-          <div className="absolute -top-8 w-[120%] h-4 bg-slate-300 dark:bg-slate-700 rounded-t-sm" />
+          <div className="absolute -top-6 sm:-top-8 w-[120%] h-3 sm:h-4 bg-slate-300 dark:bg-slate-700 rounded-t-sm" />
           <div
-            className={`w-12 sm:w-16 h-full ${pillar.color} opacity-80 group-hover:opacity-100 transition-all duration-300 rounded-sm flex flex-col items-center justify-center shadow-lg relative overflow-hidden`}
+            className={`w-10 sm:w-16 h-full ${pillar.color} opacity-80 group-hover:opacity-100 transition-all duration-300 rounded-sm flex flex-col items-center justify-center shadow-lg relative overflow-hidden`}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/10 pointer-events-none" />
-            <div className="absolute inset-0 flex justify-center gap-1 opacity-20">
-              <div className="w-1 h-full bg-black/20" />
-              <div className="w-1 h-full bg-black/20" />
-            </div>
-            <pillar.icon className="text-white w-6 h-6 sm:w-8 sm:h-8 drop-shadow-md transform group-hover:scale-110 transition-transform" />
+            <pillar.icon className="text-white w-5 h-5 sm:w-8 sm:h-8 drop-shadow-md transform group-hover:scale-110 transition-transform" />
           </div>
-          <div className="w-16 sm:w-20 h-4 bg-slate-400 dark:bg-slate-600 rounded-sm mt-1" />
-          <div className="mt-3 text-center">
-            <p className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+          <div className="w-14 sm:w-20 h-3 sm:h-4 bg-slate-400 dark:bg-slate-600 rounded-sm mt-1" />
+          <div className="mt-2 sm:mt-3 text-center">
+            <p className="text-[8px] sm:text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 truncate w-full">
               {pillar.name}
-            </p>
-            <p className="text-[9px] text-slate-400 dark:text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">
-              {pillar.desc}
             </p>
           </div>
         </div>
       ))}
-    </div>
-    <div className="text-center mt-8 text-xs font-mono text-slate-400 uppercase tracking-widest">
-      The Foundation of Software
     </div>
   </div>
 );
@@ -94,7 +84,7 @@ const SafeVisual: React.FC<SafeVisualProps> = ({
   onLock,
 }) => {
   return (
-    <div className="bg-slate-100 dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-800 my-6 flex flex-col items-center">
+    <div className="bg-slate-100 dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col items-center transform scale-90 sm:scale-100 transition-transform">
       <div
         className={`w-64 h-48 bg-slate-800 rounded-xl border-4 ${
           locked ? "border-red-500" : "border-green-500"
@@ -181,10 +171,10 @@ const ShapeShifterVisual: React.FC<ShapeShifterVisualProps> = ({
   shapeType,
   setShapeType,
 }) => (
-  <div className="bg-slate-100 dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-800 my-6 flex flex-col items-center">
-    <div className="h-40 flex items-center justify-center">
+  <div className="bg-slate-100 dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col items-center">
+    <div className="h-32 sm:h-40 flex items-center justify-center">
       <div
-        className={`w-24 h-24 transition-all duration-700 ease-in-out shadow-xl flex items-center justify-center text-white font-bold text-xs
+        className={`w-20 h-20 sm:w-24 sm:h-24 transition-all duration-700 ease-in-out shadow-xl flex items-center justify-center text-white font-bold text-xs
           ${
             shapeType === "blob"
               ? "bg-slate-500 rounded-[30%_70%_70%_30%_/_30%_30%_70%_70%]"
@@ -223,10 +213,6 @@ const ShapeShifterVisual: React.FC<ShapeShifterVisualProps> = ({
         Triangle
       </button>
     </div>
-    <p className="mt-4 text-xs text-slate-500 text-center max-w-xs">
-      The function call <code>draw()</code> is the same, but the implementation
-      (shape) changes at runtime.
-    </p>
   </div>
 );
 
@@ -248,7 +234,7 @@ const DiamondVisual: React.FC<DiamondVisualProps> = ({ signal, setSignal }) => {
   }, [signal, setSignal]);
 
   return (
-    <div className="bg-slate-100 dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-800 my-6 flex flex-col items-center">
+    <div className="bg-slate-100 dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col items-center transform scale-90 sm:scale-100 transition-transform">
       <div className="relative w-64 h-64">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-10 bg-slate-200 dark:bg-slate-800 border border-slate-400 rounded flex items-center justify-center text-xs font-bold z-10">
           Vehicle
@@ -328,7 +314,7 @@ const DiamondVisual: React.FC<DiamondVisualProps> = ({ signal, setSignal }) => {
 };
 
 const BlueprintVisual = () => (
-  <div className="bg-slate-100 dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-800 my-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div className="bg-slate-100 dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
     <div className="bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800 rounded-lg p-4 relative overflow-hidden">
       <div className="absolute top-0 right-0 bg-blue-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl">
         IS-A
@@ -338,21 +324,18 @@ const BlueprintVisual = () => (
       </div>
       <div className="space-y-2 font-mono text-xs text-slate-600 dark:text-slate-400">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-green-500 rounded-full" />
-          <span>engine_type = "V8"</span>
+          <div className="w-2 h-2 bg-green-500 rounded-full" />
+          <span>engine = "V8"</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-green-500 rounded-full" />
-          <span>start_engine() &#123;...&#125;</span>
+          <div className="w-2 h-2 bg-green-500 rounded-full" />
+          <span>start() &#123;..&#125;</span>
         </div>
         <div className="flex items-center gap-2 opacity-50">
-          <div className="w-3 h-3 border border-slate-400 rounded-full" />
-          <span>drive() (Abstract)</span>
+          <div className="w-2 h-2 border border-slate-400 rounded-full" />
+          <span>drive()</span>
         </div>
       </div>
-      <p className="mt-4 text-blue-600/70 dark:text-blue-400/70 italic">
-        "Partial implementation. Shared state."
-      </p>
     </div>
     <div className="bg-purple-50 dark:bg-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg p-4 relative overflow-hidden">
       <div className="absolute top-0 right-0 bg-purple-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl">
@@ -363,21 +346,14 @@ const BlueprintVisual = () => (
       </div>
       <div className="space-y-2 font-mono text-xs text-slate-600 dark:text-slate-400">
         <div className="flex items-center gap-2 opacity-50">
-          <div className="w-3 h-3 border border-slate-400 rounded-full" />
+          <div className="w-2 h-2 border border-slate-400 rounded-full" />
           <span>fly()</span>
         </div>
         <div className="flex items-center gap-2 opacity-50">
-          <div className="w-3 h-3 border border-slate-400 rounded-full" />
+          <div className="w-2 h-2 border border-slate-400 rounded-full" />
           <span>land()</span>
         </div>
-        <div className="flex items-center gap-2 opacity-50">
-          <div className="w-3 h-3 border border-slate-400 rounded-full" />
-          <span>get_altitude()</span>
-        </div>
       </div>
-      <p className="mt-4 text-purple-600/70 dark:text-purple-400/70 italic">
-        "No implementation. Just rules."
-      </p>
     </div>
   </div>
 );
@@ -422,8 +398,6 @@ export const OOPGuide: React.FC<OOPGuideProps> = ({
     const safePage = initialPage >= totalPages ? totalPages - 1 : initialPage;
     setCurrentPage(safePage);
 
-    // FIX: If initialPage is 5 (length), mark ALL pages as true.
-    // If initialPage is 4, mark 0..3 as true.
     const countToMark = initialPage >= totalPages ? totalPages : initialPage;
 
     if (countToMark > 0) {
@@ -455,7 +429,6 @@ export const OOPGuide: React.FC<OOPGuideProps> = ({
     if (currentPage < totalPages - 1) {
       handlePageChange(currentPage + 1);
     } else if (currentPage === totalPages - 1) {
-      // FIX: Save bookmark as "5" (totalPages) to indicate full completion
       if (onPageChange) onPageChange(totalPages);
       if (onComplete) onComplete();
     }
@@ -497,88 +470,22 @@ export const OOPGuide: React.FC<OOPGuideProps> = ({
     switch (currentPage) {
       case 0:
         return (
-          <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-6">
+          <div className="h-full flex flex-col items-center justify-center p-4 animate-in fade-in slide-in-from-right-4 duration-500">
+            <h2 className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white mb-4 text-center">
               The 4 Pillars of OOP
             </h2>
-            <div className="prose prose-slate dark:prose-invert max-w-none">
-              <p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">
-                Object-Oriented Programming (OOP) is about modeling software
-                like the real world to manage complexity. As apps grow,
-                spaghetti code breaks. OOP organizes code into modular "Objects"
-                that talk to each other.
-              </p>
-              <PillarsVisual />
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-8 flex items-center gap-2">
-                <div className="w-1 h-6 bg-orange-500 rounded-full" />
-                Why Amazon Cares
-              </h3>
-              <ul className="space-y-3 mt-4">
-                <li className="flex items-start gap-3">
-                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-500 flex-shrink-0" />
-                  <span className="text-slate-600 dark:text-slate-300">
-                    <strong className="text-slate-900 dark:text-white">
-                      Scalability:
-                    </strong>{" "}
-                    If every team accessed every other team's database directly
-                    (No Encapsulation), one change would break the whole site.
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-500 flex-shrink-0" />
-                  <span className="text-slate-600 dark:text-slate-300">
-                    <strong className="text-slate-900 dark:text-white">
-                      Maintenance:
-                    </strong>{" "}
-                    OOP allows teams to swap out old systems for new ones
-                    without rewriting the whole codebase (Polymorphism).
-                  </span>
-                </li>
-              </ul>
-            </div>
+            <PillarsVisual />
+            <p className="text-[10px] sm:text-xs text-slate-400 mt-4 text-center">
+              The core concepts that organize software design.
+            </p>
           </div>
         );
       case 1:
         return (
-          <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-6">
+          <div className="h-full flex flex-col items-center justify-center p-4 animate-in fade-in slide-in-from-right-4 duration-500">
+            <h2 className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white mb-4 text-center">
               Encapsulation & Abstraction
             </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              <div className="bg-blue-50 dark:bg-blue-900/10 p-6 rounded-xl border border-blue-100 dark:border-blue-800">
-                <h3 className="text-lg font-bold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
-                  <Shield size={20} /> Encapsulation (The Capsule)
-                </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-300 mb-4">
-                  Bundling data and methods together and <em>hiding</em> the
-                  internal state. "Keep your privates private."
-                </p>
-                <div className="text-xs font-mono bg-white dark:bg-slate-900 p-3 rounded border border-blue-200 dark:border-blue-800">
-                  bankAccount.balance = -100{" "}
-                  <span className="text-red-500 font-bold">❌</span>
-                  <br />
-                  bankAccount.withdraw(100){" "}
-                  <span className="text-green-500 font-bold">✅</span>
-                </div>
-              </div>
-              <div className="bg-purple-50 dark:bg-purple-900/10 p-6 rounded-xl border border-purple-100 dark:border-purple-800">
-                <h3 className="text-lg font-bold text-purple-700 dark:text-purple-300 mb-2 flex items-center gap-2">
-                  <EyeOff size={20} /> Abstraction (The Remote)
-                </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-300 mb-4">
-                  Hiding complex implementation details and showing only
-                  essential features. You press "On", you don't see the
-                  circuits.
-                </p>
-                <div className="text-xs font-mono bg-white dark:bg-slate-900 p-3 rounded border border-purple-200 dark:border-purple-800">
-                  tv.turnOn(){" "}
-                  <span className="text-green-500 font-bold">✅</span>
-                  <br />
-                  tv.circuits.voltage.set(120){" "}
-                  <span className="text-red-500 font-bold">❌</span>
-                </div>
-              </div>
-            </div>
             <SafeVisual
               locked={safeLocked}
               code={safeCode}
@@ -589,215 +496,53 @@ export const OOPGuide: React.FC<OOPGuideProps> = ({
                 setSafeMessage("LOCKED");
               }}
             />
-            <div className="mt-8">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">
-                Python Implementation
-              </h3>
-              <div className="bg-slate-900 text-slate-300 p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                <pre>{`class BankAccount:
-    def __init__(self):
-        self._balance = 0 # _ indicates "protected"
-
-    # Encapsulation: Control access via methods
-    def deposit(self, amount):
-        if amount > 0:
-            self._balance += amount
-            
-    # Abstraction: User doesn't need to know HOW interest is calculated
-    def apply_interest(self):
-        self._complex_interest_calculation()
-        
-    def _complex_interest_calculation(self):
-        # Hidden complex math
-        self._balance *= 1.05`}</pre>
-              </div>
-            </div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-6 text-center max-w-xs">
+              <strong>Encapsulation:</strong> The Safe (Protects Data) <br />
+              <strong>Abstraction:</strong> The Keypad (Simplifies Access)
+            </p>
           </div>
         );
       case 2:
         return (
-          <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-6">
-              Inheritance & Polymorphism
+          <div className="h-full flex flex-col items-center justify-center p-4 animate-in fade-in slide-in-from-right-4 duration-500">
+            <h2 className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white mb-4 text-center">
+              Polymorphism
             </h2>
-            <div className="prose prose-slate dark:prose-invert max-w-none mb-8">
-              <p className="text-lg text-slate-600 dark:text-slate-300">
-                <strong>Inheritance (Is-A):</strong> Creating new classes based
-                on existing ones to reuse code. A <code>Dog</code> is an{" "}
-                <code>Animal</code>.
-                <br />
-                <strong>Polymorphism (Universal Plug):</strong> The ability of
-                different objects to respond to the <em>same</em> method call in
-                their own way.
-              </p>
-            </div>
             <ShapeShifterVisual
               shapeType={shapeType}
               setShapeType={setShapeType}
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-xl">
-                <h4 className="font-bold text-slate-900 dark:text-white mb-2">
-                  Compile-time (Overloading)
-                </h4>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Same method name, different parameters. (Not natively
-                  supported in Python).
-                </p>
-              </div>
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-xl">
-                <h4 className="font-bold text-slate-900 dark:text-white mb-2">
-                  Runtime (Overriding)
-                </h4>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Subclass provides a specific implementation of a method
-                  defined in the Parent.
-                </p>
-              </div>
-            </div>
-            <div className="mt-8">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">
-                Python Implementation
-              </h3>
-              <div className="bg-slate-900 text-slate-300 p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                <pre>{`class Animal:
-    def speak(self): pass
-
-class Dog(Animal):
-    def speak(self): return "Woof"
-
-class Cat(Animal):
-    def speak(self): return "Meow"
-
-# Polymorphism in action
-def make_it_speak(animal: Animal):
-    # The function doesn't care if it's a Dog or Cat
-    print(animal.speak())`}</pre>
-              </div>
-            </div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-4 text-center max-w-xs">
+              One interface (<code>draw()</code>), many forms.
+            </p>
           </div>
         );
       case 3:
         return (
-          <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-6">
+          <div className="h-full flex flex-col items-center justify-center p-4 animate-in fade-in slide-in-from-right-4 duration-500">
+            <h2 className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white mb-4 text-center">
               The Diamond Problem
             </h2>
-            <div className="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 p-6 rounded-xl mb-8">
-              <h3 className="text-lg font-bold text-red-700 dark:text-red-400 mb-2 flex items-center gap-2">
-                <AlertTriangle size={20} /> The Inheritance Trap
-              </h3>
-              <p className="text-slate-700 dark:text-slate-300 text-sm">
-                You have an <code>AmphibiousVehicle</code> that inherits from
-                both <code>Car</code> and <code>Boat</code>. Both Car and Boat
-                inherit from <code>Vehicle</code>. When you call{" "}
-                <code>drive()</code>, whose method runs? Car's? Or Boat's?
-              </p>
-            </div>
             <DiamondVisual
               signal={diamondSignal}
               setSignal={setDiamondSignal}
             />
-            <div className="mt-8 space-y-6">
-              <div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
-                  How Languages Handle It
-                </h3>
-                <ul className="list-disc list-inside text-slate-600 dark:text-slate-300 space-y-2">
-                  <li>
-                    <strong>Java/C#:</strong> Banned. No multiple inheritance of
-                    classes.
-                  </li>
-                  <li>
-                    <strong>Python/C++:</strong> Allowed. Uses complex MRO
-                    (Method Resolution Order) rules (Left-to-Right,
-                    Depth-First).
-                  </li>
-                </ul>
-              </div>
-              <div className="bg-slate-100 dark:bg-slate-800 p-5 rounded-xl border-l-4 border-orange-500">
-                <h4 className="font-bold text-slate-900 dark:text-white mb-2 text-sm uppercase tracking-wider">
-                  Interview Answer
-                </h4>
-                <p className="italic text-slate-600 dark:text-slate-300 text-sm">
-                  "Multiple inheritance introduces the Diamond Problem, creating
-                  ambiguity and tight coupling. I prefer using{" "}
-                  <strong>Interfaces</strong> (or Mixins) for multiple
-                  capabilities because they don't carry state implementation,
-                  avoiding this conflict."
-                </p>
-              </div>
-            </div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-4 text-center max-w-xs">
+              Ambiguity when inheriting from two parents with the same method.
+            </p>
           </div>
         );
       case 4:
         return (
-          <div className="animate-in fade-in slide-in-from-right-4 duration-500">
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-6">
+          <div className="h-full flex flex-col items-center justify-center p-4 animate-in fade-in slide-in-from-right-4 duration-500">
+            <h2 className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white mb-4 text-center">
               Abstract Class vs Interface
             </h2>
-            <p className="text-lg text-slate-600 dark:text-slate-300 mb-8">
-              This is the #1 LLD question. Knowing when to use a "Partial
-              Blueprint" vs a "Contract".
-            </p>
             <BlueprintVisual />
-            <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 mt-8">
-              <table className="w-full text-sm text-left">
-                <thead className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold uppercase">
-                  <tr>
-                    <th className="p-4">Feature</th>
-                    <th className="p-4">Abstract Class</th>
-                    <th className="p-4">Interface</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900">
-                  <tr>
-                    <td className="p-4 font-medium text-slate-900 dark:text-white">
-                      Methods
-                    </td>
-                    <td className="p-4 text-slate-600 dark:text-slate-400">
-                      Can have both abstract & concrete
-                    </td>
-                    <td className="p-4 text-slate-600 dark:text-slate-400">
-                      Only abstract (mostly)
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 font-medium text-slate-900 dark:text-white">
-                      Variables
-                    </td>
-                    <td className="p-4 text-slate-600 dark:text-slate-400">
-                      Can have state (instance vars)
-                    </td>
-                    <td className="p-4 text-slate-600 dark:text-slate-400">
-                      Constant (static final) only
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 font-medium text-slate-900 dark:text-white">
-                      Relationship
-                    </td>
-                    <td className="p-4 text-blue-600 dark:text-blue-400 font-bold">
-                      Is-A
-                    </td>
-                    <td className="p-4 text-purple-600 dark:text-purple-400 font-bold">
-                      Can-Do
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 font-medium text-slate-900 dark:text-white">
-                      Purpose
-                    </td>
-                    <td className="p-4 text-slate-600 dark:text-slate-400">
-                      Code Reuse
-                    </td>
-                    <td className="p-4 text-slate-600 dark:text-slate-400">
-                      Decoupling / Contract
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-4 text-center max-w-xs">
+              <strong>Abstract Class:</strong> Shared State (Blueprint) <br />
+              <strong>Interface:</strong> Shared Capability (Contract)
+            </p>
           </div>
         );
       default:
@@ -810,18 +555,18 @@ def make_it_speak(animal: Animal):
   );
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+    <div className="flex flex-col min-h-full h-auto bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
       {/* Progress Header */}
-      <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950">
+      <div className="p-3 sm:p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex-none">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Module Progress
+          <span className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">
+            Interactive Guide
           </span>
-          <span className="text-xs font-bold text-orange-600 dark:text-orange-400">
+          <span className="text-[10px] sm:text-xs font-bold text-orange-600 dark:text-orange-400">
             {progress}%
           </span>
         </div>
-        <div className="h-1.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+        <div className="h-1 sm:h-1.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
           <div
             className="h-full bg-orange-500 transition-all duration-500"
             style={{ width: `${progress}%` }}
@@ -829,24 +574,25 @@ def make_it_speak(animal: Animal):
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6 sm:p-8 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700">
-        {renderContent()}
-      </div>
+      {/* Main Content - Flex Grow to fill space, centered content */}
+      <div className="flex-1 relative p-1">{renderContent()}</div>
 
-      <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex justify-between items-center">
+      {/* Footer Navigation - Fixed height */}
+      <div className="p-3 sm:p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex justify-between items-center flex-none z-10 relative">
         <button
           onClick={prevPage}
           disabled={currentPage === 0}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-1 sm:gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <ChevronLeft size={16} /> Previous
+          <ChevronLeft size={16} />
+          <span>Previous</span>
         </button>
 
         <div className="flex gap-1">
           {Array.from({ length: totalPages }).map((_, idx) => (
             <div
               key={idx}
-              className={`w-2 h-2 rounded-full transition-colors ${
+              className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-colors ${
                 idx === currentPage
                   ? "bg-orange-500"
                   : completedPages[idx]
@@ -859,13 +605,13 @@ def make_it_speak(animal: Animal):
 
         <button
           onClick={nextPage}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-colors ${
+          className={`flex items-center gap-1 sm:gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-colors ${
             currentPage === totalPages - 1
               ? "bg-green-600 text-white hover:bg-green-500"
               : "bg-orange-600 text-white hover:bg-orange-500"
           }`}
         >
-          {currentPage === totalPages - 1 ? "Finish Module" : "Next"}
+          <span>{currentPage === totalPages - 1 ? "Finish" : "Next"}</span>
           {currentPage === totalPages - 1 ? (
             <CheckCircle2 size={16} />
           ) : (

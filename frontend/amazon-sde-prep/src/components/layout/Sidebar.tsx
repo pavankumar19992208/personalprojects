@@ -104,23 +104,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
             />
           </div>
 
-          <div className="flex justify-around items-center p-2 pb-4 pt-3">
+          <div className="flex justify-around items-center py-2">
             <MobileNavButton
               active={activeView === "dashboard"}
               onClick={() => setActiveView("dashboard")}
-              icon={<Layout size={24} />}
+              icon={<Layout size={20} />}
               label="Command"
             />
             <MobileNavButton
               active={activeView === "curriculum"}
               onClick={() => setActiveView("curriculum")}
-              icon={<BrainCircuit size={24} />}
+              icon={<BrainCircuit size={20} />}
               label="Quest"
             />
             <MobileNavButton
               active={activeView === "resources"}
               onClick={() => setActiveView("resources")}
-              icon={<Database size={24} />}
+              icon={<Database size={20} />}
               label="Intel"
             />
           </div>
@@ -327,7 +327,7 @@ function MobileNavButton({
   return (
     <button
       onClick={onClick}
-      className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-all duration-200
+      className={`flex flex-col items-center gap-0.5 p-1 rounded-lg transition-all duration-200
         ${
           active
             ? "text-orange-600 dark:text-orange-500"
@@ -335,7 +335,7 @@ function MobileNavButton({
         }`}
     >
       <div
-        className={`p-1.5 rounded-full transition-all ${
+        className={`p-1 rounded-full transition-all ${
           active
             ? "bg-slate-100 dark:bg-slate-800 shadow-lg shadow-orange-500/20"
             : ""
