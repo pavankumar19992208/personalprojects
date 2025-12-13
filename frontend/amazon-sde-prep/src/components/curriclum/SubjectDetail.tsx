@@ -7,7 +7,7 @@ import {
   BookOpen,
   AlertTriangle,
   TrendingUp,
-  Bot,
+  // Bot,
   Copy,
   Lightbulb,
   Code2,
@@ -28,7 +28,71 @@ import { CommonLLDProblemsGuide } from "./lldtopics/CommonLLDProblemsGuide";
 
 // Import Data & Components
 import { OOP_THEORY, OOP_TIPS } from "../../../data/theory/oop";
+import {
+  DESIGN_FUNDAMENTALS_THEORY,
+  DESIGN_FUNDAMENTALS_TIPS,
+} from "../../../data/theory/design_fundamentals";
+import {
+  CREATIONAL_THEORY,
+  CREATIONAL_TIPS,
+} from "../../../data/theory/creational_patterns";
+import { SOLID_THEORY, SOLID_TIPS } from "../../../data/theory/solid";
+import {
+  BEHAVIORAL_PATTERNS_THEORY,
+  BEHAVIORAL_PATTERNS_TIPS,
+} from "../../../data/theory/behavioral_patterns";
+import {
+  PARKING_LOT_THEORY,
+  PARKING_LOT_TIPS,
+} from "../../../data/theory/parking_lot";
+import {
+  COMMON_LLD_THEORY,
+  COMMON_LLD_TIPS,
+} from "../../../data/theory/common_lld";
 import { TipsModal } from "./TipsModal";
+import {
+  SingletonVisual,
+  FactoryVisual,
+  BuilderVisual,
+} from "../visuals/CreationalVisuals";
+import {
+  ScalabilityVisual,
+  LoadBalancerVisual,
+  CAPVisual,
+  CachingVisual,
+} from "../visuals/DesignFundamentalsVisuals";
+import { StrategyVisual, ObserverVisual } from "../visuals/BehavioralVisuals";
+import {
+  FactoryVisual as PLFactoryVisual,
+  StrategyVisual as PLStrategyVisual,
+  ConcurrencyVisual,
+  ScalabilityVisual as PLScalabilityVisual,
+} from "../visuals/ParkingLotVisuals";
+import {
+  SRPVisual,
+  OCPVisual,
+  DIPVisual,
+  LSPVisual,
+  ISPVisual,
+} from "../visuals/SOLIDVisuals";
+import {
+  STRUCTURAL_PATTERNS_THEORY,
+  STRUCTURAL_PATTERNS_TIPS,
+} from "../../../data/theory/structural_patterns";
+
+import {
+  EncapsulationVisual,
+  AbstractionVisual,
+  InheritanceVisual,
+  PolymorphismVisual,
+} from "../visuals/OOPVisuals";
+import {
+  RateLimiterVisual,
+  TinyURLVisual,
+  NotificationVisual,
+  SearchVisual,
+} from "../visuals/CommonLLDVisuals";
+import { AdapterVisual, DecoratorVisual } from "../visuals/StructuralVisuals";
 
 // --- Helper Component for Theoretical Content (Light Mode Only) ---
 const TheoreticalPanel = ({
@@ -157,10 +221,81 @@ const TheoreticalPanel = ({
   };
 
   const renderContent = (text: string) => {
-    // Split by code blocks first to avoid parsing inside code
-    const parts = text.split(/(```[\s\S]*?```)/g);
+    // Split by code blocks and component markers
+    const parts = text.split(/(```[\s\S]*?```|<<<.*?>>>)/g);
 
     return parts.map((part, index) => {
+      // Handle Component Markers
+      if (part.startsWith("<<<") && part.endsWith(">>>")) {
+        const componentName = part.slice(3, -3);
+        switch (componentName) {
+          case "SingletonVisual":
+            return <SingletonVisual key={index} />;
+          case "BuilderVisual":
+            return <BuilderVisual key={index} />;
+          case "SRPVisual":
+            return <SRPVisual key={index} />;
+          case "OCPVisual":
+            return <OCPVisual key={index} />;
+          case "LSPVisual":
+            return <LSPVisual key={index} />;
+          case "ISPVisual":
+            return <ISPVisual key={index} />;
+          case "DIPVisual":
+            return <DIPVisual key={index} />;
+          case "ScalabilityVisual":
+            return <ScalabilityVisual key={index} />;
+          case "LoadBalancerVisual":
+            return <LoadBalancerVisual key={index} />;
+          case "CAPVisual":
+            return <CAPVisual key={index} />;
+          case "CachingVisual":
+            return <CachingVisual key={index} />;
+          case "EncapsulationVisual":
+            return <EncapsulationVisual key={index} />;
+          case "AbstractionVisual":
+            return <AbstractionVisual key={index} />;
+          case "InheritanceVisual":
+            return <InheritanceVisual key={index} />;
+          case "PolymorphismVisual":
+            return <PolymorphismVisual key={index} />;
+          // --- FIXED CASES (Removed extra <<< >>>) ---
+          case "AdapterVisual":
+            return <AdapterVisual key={index} />;
+          case "DecoratorVisual":
+            return <DecoratorVisual key={index} />;
+
+          case "ObserverVisual":
+            return <ObserverVisual key={index} />;
+          case "FactoryVisual":
+            if (topic.id === "lld-parking-lot")
+              return <PLFactoryVisual key={index} />;
+            return <FactoryVisual key={index} />;
+          case "StrategyVisual":
+            if (topic.id === "lld-parking-lot")
+              return <PLStrategyVisual key={index} />;
+            return <StrategyVisual key={index} />;
+
+          case "ConcurrencyVisual":
+            return <ConcurrencyVisual key={index} />;
+          case "ScalabilityVisual":
+            // Check if it's the Design Fundamentals one or Parking Lot one
+            if (topic.id === "lld-parking-lot")
+              return <PLScalabilityVisual key={index} />;
+            return <ScalabilityVisual key={index} />;
+          case "RateLimiterVisual":
+            return <RateLimiterVisual key={index} />;
+          case "TinyURLVisual":
+            return <TinyURLVisual key={index} />;
+          case "NotificationVisual":
+            return <NotificationVisual key={index} />;
+          case "SearchVisual":
+            return <SearchVisual key={index} />;
+          default:
+            return null;
+        }
+      }
+
       if (part.startsWith("```")) {
         const lines = part.split("\n");
         const lang = lines[0].replace(/^```/, "").trim() || "text";
@@ -320,12 +455,12 @@ const TheoreticalPanel = ({
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-slate-900 mb-6 tracking-tight">
+        {/* <h2 className="text-3xl font-bold text-slate-900 mb-6 tracking-tight">
           Theoretical Deep Dive
-        </h2>
+        </h2> */}
 
         {/* AI Prompt Box if available */}
-        {topic.prompt && (
+        {/* {topic.prompt && (
           <div className="mb-8 bg-purple-50 border border-purple-100 rounded-xl p-6">
             <div className="flex items-center gap-2 text-purple-700 font-bold mb-3 text-sm uppercase tracking-wider">
               <Bot size={18} /> AI Context
@@ -334,7 +469,7 @@ const TheoreticalPanel = ({
               "{topic.prompt}"
             </p>
           </div>
-        )}
+        )} */}
 
         <div className="prose prose-slate max-w-none">
           {renderContent(content)}
@@ -398,8 +533,6 @@ export const SubjectDetail: React.FC<SubjectDetailProps> = ({
   const isOOP = topic.id === "lld-oop";
   const isDesignFundamentals = topic.id === "lld-fundamentals";
   const isSOLID = topic.id === "lld-solid";
-  // const isInteractiveGuide =
-  //   isOOP || isNetworkTopic || isOSTopic || isDBMSTopic;
   const isCreational = topic.id === "lld-creational";
   const isStructural = topic.id === "lld-structural";
   const isBehavioral = topic.id === "lld-behavioral";
@@ -407,8 +540,41 @@ export const SubjectDetail: React.FC<SubjectDetailProps> = ({
   const isCommonLLD = topic.id === "lld-common";
 
   // Determine content based on topic
-  const theoryContent = isOOP ? OOP_THEORY : topic.explanation;
-  const tipsContent = isOOP ? OOP_TIPS : [];
+  const theoryContent = isOOP
+    ? OOP_THEORY
+    : isDesignFundamentals
+    ? DESIGN_FUNDAMENTALS_THEORY
+    : isSOLID
+    ? SOLID_THEORY
+    : isCreational
+    ? CREATIONAL_THEORY
+    : isStructural
+    ? STRUCTURAL_PATTERNS_THEORY
+    : isBehavioral
+    ? BEHAVIORAL_PATTERNS_THEORY
+    : isParkingLot
+    ? PARKING_LOT_THEORY
+    : isCommonLLD // --- NEW CHECK ---
+    ? COMMON_LLD_THEORY
+    : topic.explanation;
+
+  const tipsContent = isOOP
+    ? OOP_TIPS
+    : isDesignFundamentals
+    ? DESIGN_FUNDAMENTALS_TIPS
+    : isSOLID
+    ? SOLID_TIPS
+    : isCreational
+    ? CREATIONAL_TIPS
+    : isStructural
+    ? STRUCTURAL_PATTERNS_TIPS
+    : isBehavioral
+    ? BEHAVIORAL_PATTERNS_TIPS
+    : isParkingLot
+    ? PARKING_LOT_TIPS
+    : isCommonLLD // --- NEW CHECK ---
+    ? COMMON_LLD_TIPS
+    : [];
 
   // Determine which guide component to render
   const renderGuide = () => {
@@ -448,7 +614,7 @@ export const SubjectDetail: React.FC<SubjectDetailProps> = ({
   return (
     <div className="h-full flex flex-col bg-slate-50 dark:bg-slate-950 animate-in fade-in overflow-hidden">
       {/* Header - Fixed at top */}
-      <div className="bg-white/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 p-2 sm:p-6 flex justify-between items-center z-20 backdrop-blur flex-none">
+      <div className="bg-white/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 p-2 sm:p-3 flex justify-between items-center z-20 backdrop-blur flex-none">
         <div className="flex items-center gap-2 sm:gap-4">
           <button
             onClick={onBack}
@@ -529,7 +695,23 @@ export const SubjectDetail: React.FC<SubjectDetailProps> = ({
 
       {/* Content Area - Split Layout */}
       <div className="flex-1 overflow-y-auto lg:overflow-hidden flex flex-col lg:grid lg:grid-cols-5 relative pb-20 lg:pb-0">
-        {/* LEFT COLUMN: Interactive Guide */}
+        {/* LEFT COLUMN: Theoretical Explanation */}
+        {/* Mobile: Full height if theory open, Desktop: Full height (2/5 width) */}
+        <div
+          className={`
+            ${mobileTheoryOpen ? "flex" : "hidden"} 
+            lg:flex h-full lg:col-span-2 overflow-hidden relative shadow-xl z-10 bg-white flex-col
+            lg:border-r border-slate-200 dark:border-slate-800
+        `}
+        >
+          <TheoreticalPanel
+            content={theoryContent}
+            topic={topic}
+            onClose={() => setMobileTheoryOpen(false)}
+          />
+        </div>
+
+        {/* RIGHT COLUMN: Interactive Guide */}
         <div
           className={`
             ${mobileTheoryOpen ? "hidden" : "flex"} 
@@ -538,25 +720,10 @@ export const SubjectDetail: React.FC<SubjectDetailProps> = ({
             lg:h-full
             lg:col-span-3 
             lg:overflow-hidden
-            border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 relative 
+            bg-slate-50 dark:bg-slate-950 relative 
           `}
         >
           {renderGuide()}
-        </div>
-
-        {/* RIGHT COLUMN: Theoretical Explanation */}
-        {/* Mobile: Full height if theory open, Desktop: Full height (2/5 width) */}
-        <div
-          className={`
-            ${mobileTheoryOpen ? "flex" : "hidden"} 
-            lg:flex h-full lg:col-span-2 overflow-hidden relative shadow-xl z-10 bg-white flex-col
-        `}
-        >
-          <TheoreticalPanel
-            content={theoryContent}
-            topic={topic}
-            onClose={() => setMobileTheoryOpen(false)}
-          />
         </div>
       </div>
 

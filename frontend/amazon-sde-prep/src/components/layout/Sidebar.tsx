@@ -9,6 +9,7 @@ import {
   Sun,
   Moon,
   LogOut,
+  Settings,
 } from "lucide-react";
 import type { UserSettings } from "../../../types";
 import { useTheme } from "../../context/ThemeContext";
@@ -33,6 +34,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showMobileNav, setShowMobileNav] = useState(true);
+  const [showMobileSettings, setShowMobileSettings] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const { theme, toggleTheme } = useTheme();
 
@@ -61,6 +63,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       const currentScrollY = window.scrollY;
       if (currentScrollY > lastScrollY && currentScrollY > 50) {
         setShowMobileNav(false); // Scrolling down
+        setShowMobileSettings(false); // Close settings on scroll
       } else {
         setShowMobileNav(true); // Scrolling up
       }
@@ -75,21 +78,45 @@ export const Sidebar: React.FC<SidebarProps> = ({
   if (isMobile) {
     return (
       <>
-        {/* Mobile Theme Toggle (Floating) */}
-        <div className="fixed top-4 right-4 z-50 flex gap-2">
-          <button
-            onClick={onLogout}
-            className="p-2 rounded-full bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700 text-red-600 dark:text-red-400"
-          >
-            <LogOut size={20} />
-          </button>
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400"
-          >
-            {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
-        </div>
+        {/* Mobile Settings Popup (Replaces floating buttons) */}
+        {showMobileSettings && (
+          <>
+            {/* Backdrop to close */}
+            <div
+              className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"
+              onClick={() => setShowMobileSettings(false)}
+            />
+            <div className="fixed bottom-20 right-4 z-50 flex flex-col gap-2 p-3 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 animate-in slide-in-from-bottom-4 fade-in duration-200 min-w-[160px]">
+              <div className="text-xs font-bold text-slate-400 uppercase tracking-wider px-2 mb-1">
+                System
+              </div>
+
+              <button
+                onClick={() => {
+                  toggleTheme();
+                }}
+                className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+              >
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                  {theme === "dark" ? "Light Mode" : "Dark Mode"}
+                </span>
+                {theme === "dark" ? (
+                  <Sun size={18} className="text-orange-400" />
+                ) : (
+                  <Moon size={18} className="text-slate-600" />
+                )}
+              </button>
+
+              <button
+                onClick={onLogout}
+                className="flex items-center justify-between p-3 rounded-xl bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors text-red-600 dark:text-red-400"
+              >
+                <span className="text-sm font-medium">Logout</span>
+                <LogOut size={18} />
+              </button>
+            </div>
+          </>
+        )}
 
         <nav
           className={`fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 z-50 transition-transform duration-300 ease-in-out ${
@@ -122,6 +149,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
               onClick={() => setActiveView("resources")}
               icon={<Database size={20} />}
               label="Intel"
+            />
+            <MobileNavButton
+              active={showMobileSettings}
+              onClick={() => setShowMobileSettings(!showMobileSettings)}
+              icon={<Settings size={20} />}
+              label="System"
             />
           </div>
         </nav>

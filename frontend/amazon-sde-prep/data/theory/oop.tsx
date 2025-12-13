@@ -38,12 +38,16 @@ These two pillars are often confused, but they serve distinct purposes. Think of
 
 ### 1. Encapsulation (The Safe)
 
+<<<EncapsulationVisual>>>
+
 Encapsulation is about **Protection**. It bundles data and methods together and _hides_ the internal state from the outside world.
 
 - **The Metaphor:** A Digital Safe. You cannot reach inside and rearrange the gears (the data). You must use the keypad (public methods) to interact with it.
 - **The Rule:** "Keep your privates private."
 
 ### 2. Abstraction (The Remote)
+
+<<<AbstractionVisual>>>
 
 Abstraction is about **Simplicity**. It hides complex implementation details and exposes only the essential features relevant to the user.
 
@@ -83,12 +87,16 @@ These pillars handle **Reusability** and **Flexibility**.
 
 ### 3. Inheritance (The Blueprint)
 
+<<<InheritanceVisual>>>
+
 Inheritance allows you to create new classes based on existing ones. It follows the **IS-A** relationship.
 
 - _Example:_ A \`Dog\` **IS-A** \`Animal\`. A \`Sedan\` **IS-A** \`Car\`.
 - _Benefit:_ Don't Repeat Yourself (DRY). You write the logic for "eating" once in the Animal class, and all animals inherit it.
 
 ### 4. Polymorphism (The Shape Shifter)
+
+<<<PolymorphismVisual>>>
 
 Polymorphism (Poly = Many, Morph = Forms) is the ability of different objects to respond to the _same_ method call in their own specific way.
 
