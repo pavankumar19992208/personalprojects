@@ -1,36 +1,26 @@
 import { Plug, Layers, RefreshCw, Box } from "lucide-react";
 
 export const STRUCTURAL_PATTERNS_THEORY = `
-# The Architects of Connectivity: Mastering Structural Patterns
-
+The Architects of Connectivity: Mastering Structural Patterns
 ## 📊 At a Glance
-
   * **Amazon Frequency:** **Medium** (Common in Bar Raiser rounds and practical coding).
   * **Importance:** **Medium** (Solves very specific, messy real-world integration problems).
   * **Difficulty:** **Medium** (Requires understanding interfaces and wrappers).
-
 ### 🧠 Before You Start
-
 **The Mindset Shift:**
 In Creational Patterns, we focused on *making* objects.
 In Structural Patterns, we focus on *connecting* objects.
 
   * **The Rule:** "Favor Composition over Inheritance."
   * **Why?** Inheritance is rigid. If \`Class B\` inherits from \`Class A\`, they are married forever. Structural patterns let you "snap" objects together like Lego bricks at runtime.
-
 ---
-
 ## Part 1: The Adapter Pattern (The Translator)
-
 ### The Concept
-
 Allows objects with incompatible interfaces to collaborate.
 
 **The Metaphor:** **The Universal Travel Plug.**
 You have a US Laptop (Client) and a UK Socket (Legacy System). You cannot change the laptop plug, and you cannot rebuild the wall socket. You need a piece in the middle (Adapter) to translate.
-
 ### 🎨 Visualizing the Logic
-
 Imagine a **Legacy XML System** and a **New JSON System**.
 
 <<<AdapterVisual>>>
@@ -39,8 +29,6 @@ Imagine a **Legacy XML System** and a **New JSON System**.
 2.  **Adapter:** Intercepts the call.
 3.  **Translation:** It calls the old \`get_xml_data()\`, receives \`<stock>50</stock>\`, converts it to \`{"stock": 50}\`, and hands it to the Client.
     The Client has no idea the XML system exists.
-
-
 
 ### 🐍 Python Implementation
 
@@ -66,11 +54,8 @@ class XMLToJSONAdapter(TargetJSON):
         xml = self.legacy_system.get_xml_data()
         return {"stock": 50} # Simplified translation logic
 \`\`\`
-
 ---
-
 ## Part 2: The Decorator Pattern (The Matryoshka Doll)
-
 ### The Concept
 
 Attaches new behaviors to objects by placing these objects inside special wrapper objects that contain the behaviors.
@@ -82,7 +67,6 @@ Attaches new behaviors to objects by placing these objects inside special wrappe
   * **Layer 2:** Jacket (Adds Warmth).
   * **Layer 3:** Raincoat (Adds Waterproofing).
     You are still "You" underneath, but you have dynamically gained new properties. Inheritance would force you to create a \`HumanWithTShirtAndJacketAndRaincoat\` class.
-
 ### 🎨 Visualizing the Logic
 
 Imagine a **Coffee Shop**.
@@ -93,9 +77,7 @@ Imagine a **Coffee Shop**.
   * You wrap it in \`Milk\` (+$2).
   * You wrap that in \`Sugar\` (+$1).
   * When you call \`cost()\`, the outer layer asks the inner layer, adds its own cost, and returns the total ($8).
-
-
-
+  * 
 ### 🐍 Python Implementation
 
 **Scenario:** Adding logging/metrics to Amazon service calls without rewriting the service.
@@ -126,11 +108,8 @@ my_drink = Coffee()                 # Cost: 5
 my_drink = MilkDecorator(my_drink)  # Cost: 7 (5+2)
 my_drink = SugarDecorator(my_drink) # Cost: 8 (7+1)
 \`\`\`
-
 ---
-
 ## 🚀 Comparison: Adapter vs. Decorator
-
 This is a classic "Bar Raiser" question. Both involve wrapping an object. What's the difference?
 
 | Feature | Adapter | Decorator |
@@ -139,7 +118,6 @@ This is a classic "Bar Raiser" question. Both involve wrapping an object. What's
 | **Interface** | **Changes it** (XML -> JSON) | **Keeps it** (Coffee -> Coffee) |
 | **Metaphor** | Power Plug | Winter Jacket |
 | **Use Case** | Integrating Legacy Code | Adding Features Runtime (Logging, Caching) |
-
 ### 💡 Interview Tip
 
 If the interviewer asks: *"How would you add caching to an existing database service without changing the database code?"*

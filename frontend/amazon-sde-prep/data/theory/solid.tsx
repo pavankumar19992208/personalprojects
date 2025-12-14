@@ -1,30 +1,20 @@
 import { Hammer, Plug, Scissors, ShieldCheck, Split } from "lucide-react";
 
 export const SOLID_THEORY = `
-
-# The Grammar of Clean Code: Mastering SOLID Principles
-
+The Grammar of Clean Code: Mastering SOLID Principles
 ## 📊 At a Glance
-
 - **Amazon Frequency:** **Every Interview** (Often implied during the coding/design phase).
 - **Importance:** **Mandatory**. Violating these is an instant "red flag."
 - **Difficulty:** **Core** (Easy to learn, hard to practice).
-
 ### 🧠 Before You Start
-
 **The Amazon Lens:** Amazon engineers obsess over **maintainability**. Code is written once but read 100 times.
 
 - **The Litmus Test:** If you have to touch existing, working code to add a new feature, you are likely breaking SOLID principles.
 - **The Goal:** Write code that is "bored" by change. When requirements change, your code should extend, not break.
-
 ---
-
 ## 1. S - Single Responsibility Principle (SRP)
-
 <<<SRPVisual>>>
-
 ### The "Swiss Army Knife" Trap
-
 **The Concept:** A class should have **one, and only one, reason to change.**
 Many junior engineers create "God Classes"—classes that know too much. If a class handles Business Logic *and* Database Operations *and* Email Notifications, it has 3 reasons to change.
 
@@ -60,15 +50,10 @@ class OrderRepository:
 class EmailService:
     def send_confirmation(self, order): pass
 \`\`\`
-
 ---
-
 ## 2. O - Open/Closed Principle (OCP)
-
 <<<OCPVisual>>>
-
 ### The "Plug and Play" Rule
-
 **The Concept:** Software entities (classes, modules) should be **Open for Extension, but Closed for Modification.**
 You should be able to add new features without rewriting existing, tested code.
 
@@ -102,15 +87,10 @@ class VIPDiscount(Discount):
 class FavDiscount(Discount):
     def get_discount(self): return 0.2
 \`\`\`
-
 ---
-
 ## 3. L - Liskov Substitution Principle (LSP)
-
 <<<LSPVisual>>>
-
 ### The "Rubber Duck" Test
-
 **The Concept:** Subtypes must be substitutable for their base types.
 If \`Class B\` inherits from \`Class A\`, you should be able to use \`B\` anywhere you use \`A\` without crashing the app.
 
@@ -138,15 +118,11 @@ class FlyingBird(Bird):
 
 class Ostrich(Bird): pass # Ostrich is a Bird, but not a FlyingBird
 \`\`\`
-
 ---
-
 ## 4. I - Interface Segregation Principle (ISP)
 
 <<<ISPVisual>>>
-
 ### The "Menu Card" Rule
-
 **The Concept:** Clients should not be forced to depend on interfaces they do not use.
 It is better to have many small, specific interfaces than one general-purpose interface.
 
@@ -182,15 +158,10 @@ class Eatable:
 class Robot(Workable): # Only implements what it needs
     def work(self): pass
 \`\`\`
-
 ---
-
 ## 5. D - Dependency Inversion Principle (DIP)
-
 <<<DIPVisual>>>
-
 ### The "Wall Socket" Rule
-
 **The Concept:** High-level modules should not depend on low-level modules. Both should depend on abstractions.
 Don't hardwire your lamp directly into the electrical lines in the wall. Use a plug (Interface).
 

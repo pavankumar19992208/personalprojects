@@ -23,6 +23,18 @@ export const CurriculumBoard: React.FC<CurriculumBoardProps> = ({
     }
   }, [scrollToPhase]);
 
+  const handleTopicClick = (topic: Topic) => {
+    // Request full screen if not already in full screen
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.error(
+          `Error attempting to enable full-screen mode: ${err.message} (${err.name})`
+        );
+      });
+    }
+    onSelectTopic(topic);
+  };
+
   return (
     <div className="max-w-6xl mx-auto space-y-12 animate-in zoom-in-95 pb-20 sm:pb-0">
       <header>
@@ -73,7 +85,7 @@ export const CurriculumBoard: React.FC<CurriculumBoardProps> = ({
             {phase.topics.map((topic) => (
               <div
                 key={topic.id}
-                onClick={() => onSelectTopic(topic)}
+                onClick={() => handleTopicClick(topic)}
                 className="group relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-orange-500/50 p-5 rounded-xl cursor-pointer transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-900/10 dark:hover:shadow-orange-900/10 shadow-sm dark:shadow-none"
               >
                 <div className="absolute top-4 right-4">

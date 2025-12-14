@@ -1,24 +1,16 @@
 import { Shield, Link, Bell, Search } from "lucide-react";
 
 export const COMMON_LLD_THEORY = `
-# The Big 4: Common LLD Interview Questions
-
+ The Big 4: Common LLD Interview Questions
 ## 📊 At a Glance
-
   * **Frequency:** **High** (These are "screeners" or warm-up questions).
   * **Focus:** **Algorithmic Logic + Class Design**.
   * **Key Trap:** Treating these as System Design (HLD) problems. In LLD, the interviewer wants to see *Classes*, *Interfaces*, and *Functions*, not just boxes and arrows.
-
 ---
-
 ## 1. Design a Rate Limiter 🛡️
-
 ### The Core Problem
-
 You need to prevent a user from sending too many requests (e.g., Max 10 requests per second).
-
 ### The Algorithm: Token Bucket
-
 While there are many algorithms (Leaky Bucket, Fixed Window), the **Token Bucket** is the standard LLD solution because it handles "bursts" of traffic well and is easy to implement with objects.
 
 **How it works:**
@@ -29,13 +21,11 @@ While there are many algorithms (Leaky Bucket, Fixed Window), the **Token Bucket
 2.  A "Refiller" adds tokens at a fixed rate (e.g., 1 token every second).
 3.  When a Request comes in, it must "pay" 1 token.
 4.  If the bucket is empty, the request is rejected (\`429 Too Many Requests\`).
-
 ### 🏗️ LLD Structure
 
   * **\`RateLimiter\` (Interface):** Defines \`allowRequest(clientId)\`.
   * **\`TokenBucket\` (Class):** Holds current \`tokens\` and \`lastRefillTimestamp\`.
   * **\`ClientManager\` (Class):** Maps \`User_ID\` -> \`TokenBucket\`.
-
 ### 🐍 Code Snippet (Logic)
 
 \`\`\`python
@@ -63,13 +53,10 @@ class TokenBucket:
 \`\`\`
 
 ---
-
 ## 2. Design a URL Shortener (TinyURL) 🔗
-
 ### The Core Problem
 
 Convert a long URL (e.g., \`amazon.com/product/12345\`) into a short, unique alias (e.g., \`tiny.url/x7Z\`).
-
 ### The Algorithm: Base62 Encoding
 
 <<<TinyURLVisual>>>
@@ -79,37 +66,25 @@ Do not use a random hash (like MD5) because it produces long strings. Use **Base
   * **Base:** 62 characters (\`0-9\`, \`a-z\`, \`A-Z\`).
   * **Logic:** Treat the Database ID (Integer) as a number and convert it to Base62.
   * **Math:** \`ID 125\` -> \`cb\` (in Base62).
-
-
-
 ### 🏗️ LLD Structure
 
   * **\`URLService\` (Class):** The facade handling requests.
   * **\`IDGenerator\` (Singleton):** Ensures we get a unique Integer ID (e.g., a counter or Snowflake ID).
   * **\`Encoder\` (Utility):** Converts Int <-> Base62 String.
-
 ---
-
 ## 3. Design a Notification System 🔔
-
 ### The Core Problem
-
 You need to send alerts to users via different channels (Email, SMS, Push) without tightly coupling the code. If you add "Slack" notifications later, you shouldn't have to rewrite the Order Service.
-
 ### The Pattern: Observer (Pub/Sub)
-
 <<<NotificationVisual>>>
 
 This is the classic use case for the **Observer Pattern**. The "Subject" (Order Service) notifies generic "Observers" (Notification Workers).
-
 ### 🏗️ LLD Structure
 
   * **\`NotificationChannel\` (Interface):** Defines \`send(message, user)\`.
   * **\`EmailChannel\`, \`SMSChannel\` (Concrete Classes):** Implement the specific logic (SMTP, Twilio, etc.).
   * **\`NotificationManager\` (Class):** Maintains a list of active channels and iterates through them.
-
 ### 🐍 Code Snippet (Interface)
-
 \`\`\`python
 from abc import ABC, abstractmethod
 
@@ -136,35 +111,24 @@ class NotificationService:
         for channel in self.channels:
             channel.send(user_id, message)
 \`\`\`
-
 ---
-
 ## 4. Design Bookstore Search (Amazon Fresh) 🔎
-
 ### The Core Problem
-
 How do you search for "Harry Potter" efficiently?
 
   * **Naive approach:** \`SELECT * FROM books WHERE title LIKE '%Harry%'\`.
   * **Why it fails:** This requires scanning every row (O(N)). It is too slow for large datasets.
-
 ### The Solution: Inverted Index
-
 <<<SearchVisual>>>
 
 This is the data structure behind generic search engines (like Elasticsearch/Lucene). Instead of mapping \`Book -> Words\`, we map \`Word -> Books\`.
-
-
 ### 🏗️ LLD Structure
 
   * **\`Book\` (Model):** Contains metadata (Title, Author).
   * **\`InvertedIndex\` (Class):** A Hash Map: \`{ "Harry": [Book1_ID, Book2_ID] }\`.
   * **\`SearchService\` (Class):** Tokenizes the user query ("Harry", "Potter") and intersects the lists found in the index.
-
 ---
-
 ## 📝 Summary Cheat Sheet
-
 | Problem | Key Pattern/Algo | Why? |
 | :--- | :--- | :--- |
 | **Rate Limiter** | **Token Bucket** | Handles traffic bursts; easy to model as a class. |

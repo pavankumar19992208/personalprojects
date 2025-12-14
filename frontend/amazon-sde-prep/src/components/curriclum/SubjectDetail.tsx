@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Suspense, lazy } from "react";
 import {
   ChevronLeft,
   ChevronDown,
@@ -12,19 +12,66 @@ import {
   Lightbulb,
   Code2,
   Zap,
+  Loader2,
 } from "lucide-react";
 import type { Topic } from "../../../types";
-import { NetworkIntelBoard } from "../visuals/NetworkIntelBoard";
-import { OSIntelBoard } from "../visuals/OSIntelBoard";
-import { DBMSIntelBoard } from "../visuals/DBMSIntelBoard";
-import { OOPGuide } from "./lldtopics/OOPGuide";
-import { DesignFundamentalsGuide } from "./lldtopics/DesignFundamentalsGuide";
-import { SOLIDGuide } from "./lldtopics/SOLIDGuide";
-import { CreationalPatternsGuide } from "./lldtopics/CreationalPatternsGuide";
-import { StructuralPatternsGuide } from "./lldtopics/StructuralPatternsGuide";
-import { BehavioralPatternsGuide } from "./lldtopics/BehavioralPatternsGuide";
-import { ParkingLotGuide } from "./lldtopics/ParkingLotGuide";
-import { CommonLLDProblemsGuide } from "./lldtopics/CommonLLDProblemsGuide";
+
+// --- Lazy Load Heavy Guide Components ---
+const NetworkIntelBoard = lazy(() =>
+  import("../visuals/NetworkIntelBoard").then((module) => ({
+    default: module.NetworkIntelBoard,
+  }))
+);
+const OSIntelBoard = lazy(() =>
+  import("../visuals/OSIntelBoard").then((module) => ({
+    default: module.OSIntelBoard,
+  }))
+);
+const DBMSIntelBoard = lazy(() =>
+  import("../visuals/DBMSIntelBoard").then((module) => ({
+    default: module.DBMSIntelBoard,
+  }))
+);
+const OOPGuide = lazy(() =>
+  import("./lldtopics/OOPGuide").then((module) => ({
+    default: module.OOPGuide,
+  }))
+);
+const DesignFundamentalsGuide = lazy(() =>
+  import("./lldtopics/DesignFundamentalsGuide").then((module) => ({
+    default: module.DesignFundamentalsGuide,
+  }))
+);
+const SOLIDGuide = lazy(() =>
+  import("./lldtopics/SOLIDGuide").then((module) => ({
+    default: module.SOLIDGuide,
+  }))
+);
+const CreationalPatternsGuide = lazy(() =>
+  import("./lldtopics/CreationalPatternsGuide").then((module) => ({
+    default: module.CreationalPatternsGuide,
+  }))
+);
+const StructuralPatternsGuide = lazy(() =>
+  import("./lldtopics/StructuralPatternsGuide").then((module) => ({
+    default: module.StructuralPatternsGuide,
+  }))
+);
+const BehavioralPatternsGuide = lazy(() =>
+  import("./lldtopics/BehavioralPatternsGuide").then((module) => ({
+    default: module.BehavioralPatternsGuide,
+  }))
+);
+const ParkingLotGuide = lazy(() =>
+  import("./lldtopics/ParkingLotGuide").then((module) => ({
+    default: module.ParkingLotGuide,
+  }))
+);
+const CommonLLDProblemsGuide = lazy(() =>
+  import("./lldtopics/CommonLLDProblemsGuide").then((module) => ({
+    default: module.CommonLLDProblemsGuide,
+  }))
+);
 
 // Import Data & Components
 import { OOP_THEORY, OOP_TIPS } from "../../../data/theory/oop";
@@ -243,8 +290,6 @@ const TheoreticalPanel = ({
             return <ISPVisual key={index} />;
           case "DIPVisual":
             return <DIPVisual key={index} />;
-          case "ScalabilityVisual":
-            return <ScalabilityVisual key={index} />;
           case "LoadBalancerVisual":
             return <LoadBalancerVisual key={index} />;
           case "CAPVisual":
@@ -419,7 +464,7 @@ const TheoreticalPanel = ({
   };
 
   return (
-    <div className="h-full bg-white text-slate-900 overflow-y-auto p-4 sm:p-8 font-sans selection:bg-blue-100 selection:text-blue-900">
+    <div className="h-full bg-white text-slate-900 overflow-y-auto px-4 sm:px-8 pt-2 sm:pt-4 pb-8 font-sans selection:bg-blue-100 selection:text-blue-900">
       {/* Mobile Header with Hide Option */}
       <div className="lg:hidden flex justify-between items-center mb-6 pb-4 border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur z-10 -mx-4 px-4 sm:-mx-8 sm:px-8 pt-2">
         <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
@@ -435,8 +480,8 @@ const TheoreticalPanel = ({
 
       <div className="max-w-3xl mx-auto pb-20">
         {/* Header Stats for Context */}
-        <div className="flex flex-wrap gap-4 mb-8 pb-6 border-b border-slate-100">
-          <div className="flex items-center gap-2 text-sm font-medium text-slate-500 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
+        <div className="flex flex-wrap gap-4 mb-1 pb-1 border-b border-slate-100">
+          <div className="flex items-center gap-2 text-sm font-medium text-slate-500 bg-slate-50 px-3 py-.5 rounded-full border border-slate-100">
             <TrendingUp size={16} className="text-green-600" />
             Frequency:{" "}
             <span className="text-slate-900 font-bold">{topic.frequency}</span>
@@ -454,22 +499,6 @@ const TheoreticalPanel = ({
             <span className="text-slate-900 font-bold">{topic.priority}</span>
           </div>
         </div>
-
-        {/* <h2 className="text-3xl font-bold text-slate-900 mb-6 tracking-tight">
-          Theoretical Deep Dive
-        </h2> */}
-
-        {/* AI Prompt Box if available */}
-        {/* {topic.prompt && (
-          <div className="mb-8 bg-purple-50 border border-purple-100 rounded-xl p-6">
-            <div className="flex items-center gap-2 text-purple-700 font-bold mb-3 text-sm uppercase tracking-wider">
-              <Bot size={18} /> AI Context
-            </div>
-            <p className="text-purple-900/80 italic text-sm leading-relaxed">
-              "{topic.prompt}"
-            </p>
-          </div>
-        )} */}
 
         <div className="prose prose-slate max-w-none">
           {renderContent(content)}
@@ -723,7 +752,15 @@ export const SubjectDetail: React.FC<SubjectDetailProps> = ({
             bg-slate-50 dark:bg-slate-950 relative 
           `}
         >
-          {renderGuide()}
+          <Suspense
+            fallback={
+              <div className="h-full flex items-center justify-center text-slate-400 gap-2">
+                <Loader2 className="animate-spin" /> Loading Module...
+              </div>
+            }
+          >
+            {renderGuide()}
+          </Suspense>
         </div>
       </div>
 

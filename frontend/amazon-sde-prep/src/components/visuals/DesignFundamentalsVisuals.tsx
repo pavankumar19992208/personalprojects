@@ -1,14 +1,14 @@
-import React from "react";
+// import React from "react";
 import {
   Server,
   Users,
   ArrowRight,
-  ArrowDown,
+  // ArrowDown,
   Database,
   Zap,
   Network,
-  Scale,
-  ShieldAlert,
+  // Scale,
+  // ShieldAlert,
 } from "lucide-react";
 
 export const ScalabilityVisual = () => (

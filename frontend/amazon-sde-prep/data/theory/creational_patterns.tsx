@@ -8,47 +8,33 @@ import {
 } from "lucide-react";
 
 export const CREATIONAL_THEORY = `
-
-# The Architects of Code: Mastering Creational Patterns
-
+The Architects of Code: Mastering Creational Patterns
 ## 📊 At a Glance
-
 - **Amazon Frequency:** **High** (Appears in almost every LLD round involving object creation).
 - **Importance:** **High** (The foundation of flexible systems).
 - **Difficulty:** **Easy** (Conceptually simple, but implementation details matter).
-
 ### 🧠 Before You Start
-
 **The Mindset Shift:** In university, you create objects like this: \`my_obj = new DatabaseClass()\`.
 In Amazon LLD, this is a **sin**.
 
 - **Why?** It creates a "hard dependency." If you want to switch databases later, you have to find-and-replace code in 500 files.
 - **The Goal:** Move the logic of *creation* away from the logic of *execution*.
-
 ---
-
 ## Part 1: The Singleton Pattern (The President)
-
 ### The Concept
-
 Ensure a class has **only one instance** and provide a global point of access to it.
 
 **The Metaphor:** **The White House.**
 There are many houses in the US, but there is only one White House. If you mail a letter to "The President," the post office doesn't need to check which President you mean. There is only one active state at a time.
-
 ### 🎨 Visualizing the Logic
-
 Imagine a **Throne Room** with a single chair.
 
 <<<SingletonVisual>>>
 
 1.  **Attempt 1:** Thread A enters. The chair is empty. Thread A sits down (Instance Created).
 2.  **Attempt 2:** Thread B enters. The chair is occupied. Thread B is blocked or returned the existing King (Instance Returned).
-
 ### 🐍 Python Implementation (The Interview Standard)
-
 **Critical:** A basic Singleton is not enough. You must write a **Thread-Safe** Singleton using Double-Checked Locking.
-
 \`\`\`python
 import threading
 
@@ -67,13 +53,9 @@ class DatabaseConnection:
 \`\`\`
 
 **⚠️ The Trap:** Do not use Singleton just to share global variables. This is an "Anti-Pattern" because it makes Unit Testing difficult (state persists between tests).
-
 ---
-
 ## Part 2: The Factory Pattern (The Logistics Center)
-
 ### The Concept
-
 Define an interface for creating an object, but let subclasses decide which class to instantiate.
 
 **The Metaphor:** **Amazon Logistics.**
@@ -81,9 +63,7 @@ The central dispatch system doesn't care *how* a package gets there. It just loo
 
 - If destination is "Overseas" -> Create \`Ship()\`.
 - If destination is "Local" -> Create \`Truck()\`.
-
 ### 🎨 Visualizing the Logic
-
 Imagine a **Black Box Machine**.
 
 <<<FactoryVisual>>>
@@ -92,9 +72,7 @@ Imagine a **Black Box Machine**.
 2.  **Process:** The machine (Factory) contains the \`if/else\` logic.
 3.  **Output:** A shiny new \`Truck\` object pops out.
     The client code (You) never sees the \`new Truck()\` line.
-
 ### 🐍 Python Implementation
-
 \`\`\`python
 class LogisticsFactory:
     @staticmethod
@@ -112,13 +90,9 @@ vehicle.deliver()
 \`\`\`
 
 **Why Amazon Cares:** If they add "Drone Delivery" next year, they only change the *Factory* code. The millions of lines of code calling \`get_transport()\` remain untouched.
-
 ---
-
 ## Part 3: The Builder Pattern (The Subway Sandwich)
-
 ### The Concept
-
 Separate the construction of a complex object from its representation. It allows you to create different flavors of an object using the same construction code.
 
 **The Metaphor:** **Subway Sandwich Artist.**
@@ -129,9 +103,7 @@ You don't walk in and find a pre-made sandwich. You say:
 3.  "Add Lettuce."
 4.  "Skip Onions."
 5.  "Build."
-
 ### 🎨 Visualizing the Logic
-
 Imagine an **Assembly Line**.
 
 <<<BuilderVisual>>>
@@ -141,9 +113,7 @@ Imagine an **Assembly Line**.
 - Station 2 adds the Patty.
 - Station 3 adds the Cheese.
   At the end, you have a finished Burger, customized to your needs.
-
 ### 🐍 Python Implementation (Fluent Interface)
-
 This solves the **Telescoping Constructor Problem** (e.g., \`new Burger(true, false, true, false, true...)\`).
 
 \`\`\`python
@@ -175,11 +145,8 @@ my_lunch = (BurgerBuilder()
             .add_cheese()
             .build())
 \`\`\`
-
 ---
-
 ## 🚀 Application: When to use what?
-
 In your interview, listen for these "Triggers":
 
 1.  **"We need a central configuration manager..."**
