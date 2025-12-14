@@ -17,20 +17,20 @@ jobs:
                   username: ${{ secrets.AWS_USERNAME }}
                   key: ${{ secrets.AWS_SSH_KEY }}
                   script: |
-                      # Navigate to the project root
                       cd ~/personalprojects
-
-                      # Pull the latest code
                       git pull origin main
 
-                      # Use docker compose (v2) to rebuild and restart
-                      # Note: docker-compose.yml is now at the root of ~/personalprojects/backend/
-                      # But since we run from root, we point to the file if needed, OR
-                      # if you moved docker-compose.yml to backend/, run from there.
-
-                      # OPTION A: If docker-compose.yml is in backend/ folder:
                       cd backend
+
+                      # 1. Aggressive Cleanup: Remove any container holding Port 80
+                      # This fixes the conflict between the old 'root' project and new 'backend' project
+                      docker ps -q --filter "publish=80" | xargs -r docker rm -f
+
+                      # 2. Standard Cleanup: Stop containers defined in this compose file
+                      docker compose down
+
+                      # 3. Build and Start
                       docker compose up --build -d
 
-                      # Clean up unused images
+                      # 4. Remove unused images
                       docker image prune -f
