@@ -3,7 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.db.mongodb import db
 from app.api.v1.router import api_router
 
-app = FastAPI(title="Amazon SDE Prep Backend")
+# UPDATE: Add root_path so Swagger UI knows where it lives
+app = FastAPI(
+    title="Amazon SDE Prep Backend",
+    root_path="/api/sde1prep"
+)
 
 # CORS
 app.add_middleware(

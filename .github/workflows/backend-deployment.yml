@@ -17,14 +17,20 @@ jobs:
                   username: ${{ secrets.AWS_USERNAME }}
                   key: ${{ secrets.AWS_SSH_KEY }}
                   script: |
-                      # CORRECT: Navigate to the root backend folder where the master docker-compose.yml is
-                      cd ~/personalprojects/backend
+                      # Navigate to the project root
+                      cd ~/personalprojects
 
-                      # Pull the latest code from your GitHub repository
+                      # Pull the latest code
                       git pull origin main
 
-                      # Use docker-compose to rebuild and restart all services in the background
-                      docker-compose up --build -d
+                      # Use docker compose (v2) to rebuild and restart
+                      # Note: docker-compose.yml is now at the root of ~/personalprojects/backend/
+                      # But since we run from root, we point to the file if needed, OR
+                      # if you moved docker-compose.yml to backend/, run from there.
 
-                      # Clean up any old, unused Docker images
+                      # OPTION A: If docker-compose.yml is in backend/ folder:
+                      cd backend
+                      docker compose up --build -d
+
+                      # Clean up unused images
                       docker image prune -f
