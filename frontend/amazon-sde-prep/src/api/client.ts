@@ -1,5 +1,6 @@
-const API_URL = "https://0cf0ba48788f.ngrok-free.app/api/v1";
+// const API_URL = "https://0cf0ba48788f.ngrok-free.app/api/v1";
 // const API_URL = "http://localhost:8000/api/v1";
+const API_URL = "http://44.211.236.184/api/sde1prep";
 export interface AuthResponse {
   access_token: string;
   token_type: string;
