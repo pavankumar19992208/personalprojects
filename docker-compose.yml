@@ -8,13 +8,13 @@ services:
   #     - "8000"
 
   sde1prep_api:
-    build: ./sde1prep
+    build: ./backend/sde1prep
     restart: always
     expose:
       - "8000"
     # Uncomment if you need environment variables from the .env file
     env_file:
-      - ./sde1prep/.env
+      - ./backend/sde1prep/.env
 
   nginx:
     image: nginx:latest
