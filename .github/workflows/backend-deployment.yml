@@ -18,15 +18,18 @@ jobs:
                   key: ${{ secrets.AWS_SSH_KEY }}
                   script: |
                       cd ~/personalprojects
-                      git pull origin main
+
+                      # FORCE UPDATE: Fetch and hard reset to ensure server matches GitHub exactly
+                      # This discards any local changes on the server that might block a pull
+                      git fetch origin main
+                      git reset --hard origin/main
 
                       cd backend
 
                       # 1. Aggressive Cleanup: Remove any container holding Port 80
-                      # This fixes the conflict between the old 'root' project and new 'backend' project
                       docker ps -q --filter "publish=80" | xargs -r docker rm -f
 
-                      # 2. Standard Cleanup: Stop containers defined in this compose file
+                      # 2. Standard Cleanup
                       docker compose down
 
                       # 3. Build and Start
