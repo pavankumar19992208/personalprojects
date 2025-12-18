@@ -20,20 +20,21 @@ jobs:
                       cd ~/personalprojects
 
                       # FORCE UPDATE: Fetch and hard reset to ensure server matches GitHub exactly
-                      # This discards any local changes on the server that might block a pull
                       git fetch origin main
                       git reset --hard origin/main
 
                       cd backend
 
-                      # 1. Aggressive Cleanup: Remove any container holding Port 80
-                      docker ps -q --filter "publish=80" | xargs -r docker rm -f
-
-                      # 2. Standard Cleanup
+                      # 1. Standard Cleanup
+                      # We don't need to kill port 80 anymore because Docker won't use it.
                       docker compose down --remove-orphans
 
-                      # 3. Build and Start
+                      # 2. Build and Start
+                      # This will start ONLY the Python app on port 8000
                       docker compose up --build -d
 
-                      # 4. Remove unused images
+                      # 3. Remove unused images
                       docker image prune -f
+
+                      # Optional: Reload system Nginx in case you changed config files in the repo
+                      # sudo systemctl reload nginx
