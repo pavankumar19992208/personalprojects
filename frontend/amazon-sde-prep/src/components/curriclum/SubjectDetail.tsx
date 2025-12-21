@@ -15,6 +15,7 @@ import {
   Loader2,
 } from "lucide-react";
 import type { Topic } from "../../../types";
+import { AIChatAssistant } from "./AIChatAssistant"; // <--- Import this
 
 // --- Lazy Load Heavy Guide Components ---
 const NetworkIntelBoard = lazy(() =>
@@ -762,8 +763,8 @@ export const SubjectDetail: React.FC<SubjectDetailProps> = ({
             {renderGuide()}
           </Suspense>
         </div>
+        <AIChatAssistant />
       </div>
-
       {/* Tips Modal */}
       <TipsModal
         isOpen={showTips}

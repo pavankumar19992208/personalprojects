@@ -2,6 +2,7 @@ export interface Problem {
   title: string;
   difficulty: "Easy" | "Medium" | "Hard";
   url: string;
+  section?: string;
 }
 
 export interface SubTopic {

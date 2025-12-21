@@ -10,6 +10,7 @@ import { Resources } from "./components/resources/Resources";
 import { SubjectDetail } from "./components/curriclum/SubjectDetail";
 import { ThemeProvider } from "./context/ThemeContext";
 import { api } from "./api/client";
+import { Sun, X, Palette, Settings } from "lucide-react";
 
 function AppContent() {
   const [user, setUser] = useState<UserSettings | null>(null);
@@ -20,17 +21,43 @@ function AppContent() {
   const [progress, setProgress] = useState<ProgressState>({});
   const [targetPhase, setTargetPhase] = useState<string | null>(null);
   const [bookmarks, setBookmarks] = useState<Record<string, number>>({}); // <--- New State
+  const [showThemeGuide, setShowThemeGuide] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // LOAD DATA
+
   useEffect(() => {
     const savedUser = localStorage.getItem("amazon_sde_user");
     const savedProgress = localStorage.getItem("amazon_sde_progress");
-    const savedBookmarks = localStorage.getItem("amazon_sde_bookmarks"); // <--- Load bookmarks
+    const savedBookmarks = localStorage.getItem("amazon_sde_bookmarks");
 
     if (savedUser) setUser(JSON.parse(savedUser));
     if (savedProgress) setProgress(JSON.parse(savedProgress));
     if (savedBookmarks) setBookmarks(JSON.parse(savedBookmarks));
+
+    // Check mobile state
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    // ALWAYS SHOW GUIDE ON LOAD (Removed localStorage check)
+    const timer = setTimeout(() => setShowThemeGuide(true), 1000);
+
+    // Auto-dismiss after 5 seconds
+    const dismissTimer = setTimeout(() => {
+      setShowThemeGuide(false);
+    }, 10000);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(dismissTimer);
+      window.removeEventListener("resize", checkMobile);
+    };
   }, []);
+
+  const dismissGuide = () => {
+    setShowThemeGuide(false);
+  };
 
   const handleLogin = (data: any) => {
     const userSettings = {
@@ -132,7 +159,62 @@ function AppContent() {
   const percentage = Math.round((completedCount / totalTopics) * 100);
 
   return (
-    <div className="h-[100dvh] bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-200 font-sans flex overflow-hidden transition-colors duration-300">
+    <div className="h-[100dvh] bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-200 font-sans flex overflow-hidden transition-colors duration-300 relative">
+      {/* Theme Guide Toast */}
+      {showThemeGuide && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-2xl max-w-sm w-full mx-4 border border-slate-200 dark:border-slate-800 transform transition-all animate-in zoom-in-95 duration-300 relative overflow-hidden">
+            {/* Decorative Background Gradient */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 to-purple-600"></div>
+
+            <button
+              onClick={dismissGuide}
+              className="absolute top-3 right-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="flex flex-col items-center text-center space-y-4 pt-2">
+              <div className="p-3 bg-orange-50 dark:bg-slate-800 rounded-full ring-4 ring-orange-50/50 dark:ring-slate-800/50 animate-pulse">
+                <Palette
+                  size={32}
+                  className="text-orange-600 dark:text-orange-400"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+                  Customize Your Experience
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  Prefer Dark Mode? You can switch themes anytime!
+                </p>
+              </div>
+
+              <div className="bg-slate-100 dark:bg-slate-800/50 rounded-lg p-3 text-xs font-medium text-slate-600 dark:text-slate-400 w-full">
+                {isMobile ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Settings size={14} /> Check <strong>System</strong> in
+                    bottom nav
+                  </span>
+                ) : (
+                  <span className="flex items-center justify-center gap-2">
+                    <Sun size={14} /> Use the toggle in the{" "}
+                    <strong>Sidebar</strong>
+                  </span>
+                )}
+              </div>
+
+              <button
+                onClick={dismissGuide}
+                className="w-full py-2.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-semibold text-sm hover:opacity-90 transition-opacity"
+              >
+                Got it
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <Sidebar
         user={user}
         activeView={activeView}
