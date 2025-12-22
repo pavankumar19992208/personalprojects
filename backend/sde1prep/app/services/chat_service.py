@@ -16,7 +16,7 @@ class ChatService:
         self.client = genai.Client(api_key=self.api_key)
         self.sessions: Dict[str, list] = {}  # session_id -> list of messages
 
-        self.model = "gemini-2.0-flash"  # Or "gemini-1.0-pro" if you don't have access to 1.5
+        self.model = "gemini-2.5-flash"  # Or "gemini-1.0-pro" if you don't have access to 1.5
 
         self.system_instruction = (
             "You are a Senior DSA (Data Structures and Algorithms) Tutor and an expert Software Development Engineer at Amazon. "
@@ -32,7 +32,7 @@ class ChatService:
         if session_id not in self.sessions:
             self.sessions[session_id] = [
                 types.Content(
-                    role="system",
+                    role="user",  # <-- must be "user", not "system"
                     parts=[types.Part(text=self.system_instruction)],
                 )
             ]
