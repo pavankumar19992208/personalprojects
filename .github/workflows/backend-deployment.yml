@@ -10,6 +10,9 @@ jobs:
     deploy:
         runs-on: ubuntu-latest
         steps:
+            - name: Install AWS CLI
+              run: sudo apt-get update && sudo apt-get install -y awscli
+
             - name: Deploy to EC2
               uses: appleboy/ssh-action@v1.0.3
               with:
@@ -25,16 +28,19 @@ jobs:
 
                       cd backend
 
-                      # 1. Standard Cleanup
-                      # We don't need to kill port 80 anymore because Docker won't use it.
+                      # Fetch secrets from AWS Parameter Store and write to .env
+                      MONGODB_URL=$(aws ssm get-parameter --name "/myapp/MONGODB_URL" --with-decryption --query "Parameter.Value" --output text)
+                      DATABASE_NAME=$(aws ssm get-parameter --name "/myapp/DATABASE_NAME" --query "Parameter.Value" --output text)
+                      SECRET_KEY=$(aws ssm get-parameter --name "/myapp/SECRET_KEY" --with-decryption --query "Parameter.Value" --output text)
+                      GOOGLE_API_KEY=$(aws ssm get-parameter --name "/myapp/GOOGLE_API_KEY" --with-decryption --query "Parameter.Value" --output text)
+
+                      cat > .env <<EOF
+                      MONGODB_URL=$MONGODB_URL
+                      DATABASE_NAME=$DATABASE_NAME
+                      SECRET_KEY=$SECRET_KEY
+                      GOOGLE_API_KEY=$GOOGLE_API_KEY
+                      EOF
+
                       docker compose down --remove-orphans
-
-                      # 2. Build and Start
-                      # This will start ONLY the Python app on port 8000
                       docker compose up --build -d
-
-                      # 3. Remove unused images
                       docker image prune -f
-
-                      # Optional: Reload system Nginx in case you changed config files in the repo
-                      # sudo systemctl reload nginx

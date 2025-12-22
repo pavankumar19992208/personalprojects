@@ -1,2 +1,4 @@
 keys/
 *.pem
+.env
+.env.local
