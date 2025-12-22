@@ -59,7 +59,9 @@ export const AIChatAssistant: React.FC = () => {
     if (isOpen && !ws.current) {
       // Connect to the backend WebSocket
       // Note: In production, replace 'localhost:8000' with your actual domain
-      const wsUrl = `ws://localhost:8000/api/v1/chat/ws/${sessionId.current}`;
+      //   const wsUrl = `ws://localhost:8000/api/v1/chat/ws/${sessionId.current}`;
+      const wsUrl = `wss://3.81.28.220.nip.io/api/sde1prep/api/v1/chat/ws/${sessionId.current}`;
+
       ws.current = new WebSocket(wsUrl);
 
       ws.current.onopen = () => {
