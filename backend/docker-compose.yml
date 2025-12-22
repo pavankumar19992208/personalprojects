@@ -11,7 +11,7 @@ services:
   sde1prep_api:
     build: ./sde1prep
     restart: always
-    expose:
+    ports:
       - "8000:8000"
     # Uncomment if you need environment variables from the .env file
     env_file:
