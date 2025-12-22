@@ -34,7 +34,7 @@ jobs:
                       SECRET_KEY=$(aws ssm get-parameter --name "/myapp/SECRET_KEY" --with-decryption --query "Parameter.Value" --output text)
                       GOOGLE_API_KEY=$(aws ssm get-parameter --name "/myapp/GOOGLE_API_KEY" --with-decryption --query "Parameter.Value" --output text)
 
-                      cat > .env <<EOF
+                      cat > sde1prep/.env <<EOF
                       MONGODB_URL=$MONGODB_URL
                       DATABASE_NAME=$DATABASE_NAME
                       SECRET_KEY=$SECRET_KEY
