@@ -3,7 +3,8 @@ import { DOCS_SECTIONS } from "./docsData";
 
 export default function SidebarNav() {
   return (
-    <nav className="w-full md:w-64 bg-gray-50 border-r border-gray-200 h-screen p-4 sticky top-0 overflow-y-auto">
+    // [!code highlight:2] CHANGE: Removed h-screen and sticky. It is just a list now.
+    <nav className="w-full">
       <h2 className="text-lg font-semibold mb-4 text-gray-900">
         Documentation
       </h2>
@@ -21,6 +22,12 @@ export default function SidebarNav() {
               }
             >
               {section.title}
+              {/* Optional: Add a visual badge for WIP items */}
+              {!section.available && (
+                <span className="ml-2 text-[10px] uppercase bg-gray-200 text-gray-500 px-1.5 py-0.5 rounded-full">
+                  WIP
+                </span>
+              )}
             </NavLink>
           </li>
         ))}
